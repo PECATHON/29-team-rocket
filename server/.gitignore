@@ -1,4 +1,17 @@
-node_modules
+# Environment variables
 .env
-*.db
-*.db-journal
+.env.local
+.env.production
+.env.development
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
