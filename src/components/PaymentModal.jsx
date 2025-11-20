@@ -3,7 +3,7 @@ import ConfirmationSection from './ConfirmationSection'
 import PaymentSection from './PaymentSection'
 import './PaymentModal.css'
 
-function PaymentModal({ items, subtotal, onClose, onUpdateQuantity, onRemoveItem }) {
+function PaymentModal({ items, subtotal, onClose, onUpdateQuantity, onRemoveItem, onPaymentComplete }) {
   return (
     <div className="payment-modal-overlay" onClick={onClose}>
       <div className="payment-modal-popup" onClick={(e) => e.stopPropagation()}>
@@ -15,7 +15,10 @@ function PaymentModal({ items, subtotal, onClose, onUpdateQuantity, onRemoveItem
             onUpdateQuantity={onUpdateQuantity}
             onRemoveItem={onRemoveItem}
           />
-          <PaymentSection onClose={onClose} />
+          <PaymentSection
+            onClose={onClose}
+            onPaymentComplete={onPaymentComplete}
+          />
         </div>
       </div>
     </div>

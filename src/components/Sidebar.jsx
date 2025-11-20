@@ -4,12 +4,12 @@ import './Sidebar.css'
 
 function Sidebar() {
   const location = useLocation()
-  
+
   const menuItems = [
     { icon: '🏠', name: 'Home', path: '/dashboard' },
     { icon: '🍽️', name: 'POS', path: '/' },
     { icon: '📊', name: 'Discount', path: null },
-    { icon: '🕒', name: 'History', path: null },
+    { icon: '🕒', name: 'History', path: '/history' },
     { icon: '⚙️', name: 'Settings', path: '/settings' },
     { icon: '↩️', name: 'Logout', path: null },
   ]

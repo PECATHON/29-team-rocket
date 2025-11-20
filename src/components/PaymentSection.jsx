@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './PaymentSection.css'
 
-function PaymentSection({ onClose }) {
+function PaymentSection({ onClose, onPaymentComplete }) {
   const [paymentMethod, setPaymentMethod] = useState('Credit Card')
   const [formData, setFormData] = useState({
     cardholderName: 'Levi Ackerman',
@@ -20,7 +20,13 @@ function PaymentSection({ onClose }) {
 
   const handleConfirmPayment = () => {
     // Handle payment confirmation
-    console.log('Payment confirmed', { paymentMethod, formData })
+    if (onPaymentComplete) {
+      onPaymentComplete({
+        paymentMethod,
+        orderType: formData.orderType,
+        tableNo: formData.tableNo
+      })
+    }
     onClose()
   }
 
@@ -37,7 +43,7 @@ function PaymentSection({ onClose }) {
 
         <div className="payment-method-section">
           <h3 className="section-title">Payment Method</h3>
-          
+
           <div className="payment-method-tabs">
             {paymentMethods.map((method) => (
               <button
