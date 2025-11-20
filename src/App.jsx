@@ -16,37 +16,7 @@ function App() {
     return `data:image/svg+xml,${encodeURIComponent(svg)}`
   }
 
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Spicy seasoned seafood noodles',
-      price: 2.29,
-      quantity: 2,
-      image: getPlaceholderImage(60, 60),
-      note: 'Please, just a little bit spicy only.'
-    },
-    {
-      id: 2,
-      name: 'Salted pasta with mushroom sauce',
-      price: 2.69,
-      quantity: 1,
-      image: getPlaceholderImage(60, 60),
-    },
-    {
-      id: 3,
-      name: 'Spicy instant noodle with special omelette',
-      price: 3.49,
-      quantity: 3,
-      image: getPlaceholderImage(60, 60),
-    },
-    {
-      id: 4,
-      name: 'Healthy noodle with spinach leaf',
-      price: 3.29,
-      quantity: 1,
-      image: getPlaceholderImage(60, 60),
-    }
-  ])
+  const [cartItems, setCartItems] = useState([])
 
   const addToCart = (dish) => {
     const existingItem = cartItems.find(item => item.id === dish.id)

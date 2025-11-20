@@ -7,7 +7,6 @@ function Sidebar({ currentView, onViewChange }) {
     { icon: '🍽️', name: 'POS', view: 'pos', active: currentView === 'pos' },
     { icon: '📊', name: 'Discount', view: null },
     { icon: '🕒', name: 'History', view: null },
-    { icon: '📧', name: 'Messages', view: null },
     { icon: '⚙️', name: 'Settings', view: 'settings', active: currentView === 'settings' },
     { icon: '↩️', name: 'Logout', view: null },
   ]
