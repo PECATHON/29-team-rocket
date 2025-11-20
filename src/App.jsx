@@ -10,6 +10,7 @@ import Login from './components/Login'
 import FrontPage from './components/FrontPage'
 import RestaurantsList from './components/RestaurantsList'
 import RestaurantDetail from './components/RestaurantDetail'
+import ReviewsRatings from './components/ReviewsRatings'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
@@ -108,8 +109,8 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <>
-                    <MainContent 
-                      onAddToCart={addToCart} 
+                    <MainContent
+                      onAddToCart={addToCart}
                       onToggleCart={() => setShowCart(!showCart)}
                       cartItemCount={cartItems.length}
                     />
@@ -186,6 +187,16 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <History />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reviews"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <ReviewsRatings />
               </AppLayout>
             </ProtectedRoute>
           }

@@ -17,13 +17,13 @@ function Sidebar() {
   const allMenuItems = [
     { icon: '🏠', name: 'Home', path: '/dashboard', vendorOnly: true },
     { icon: '🍽️', name: 'POS', path: '/' },
-    { icon: '📊', name: 'Discount', path: null, vendorOnly: true },
     { icon: '🕒', name: 'History', path: '/history', customerOnly: true },
+    { icon: '⭐', name: 'Reviews & Ratings', path: '/reviews', customerOnly: true },
     { icon: '⚙️', name: 'Settings', path: '/settings' },
     { icon: '↩️', name: 'Logout', path: null, action: handleLogout },
   ]
 
-  // Filter menu items based on role
+  // Filter menu items based on role and ensure only clickable items are shown
   const menuItems = allMenuItems.filter(item => {
     // Hide vendor-only items from customers
     if (item.vendorOnly && isCustomer) {
@@ -31,6 +31,10 @@ function Sidebar() {
     }
     // Hide customer-only items from vendors
     if (item.customerOnly && isVendor) {
+      return false
+    }
+    // Remove non-clickable items (items without path or action)
+    if (!item.path && !item.action) {
       return false
     }
     return true
@@ -46,17 +50,9 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="logo-icon">🍽️</div>
-      </div>
       <nav className="sidebar-nav">
         {menuItems.map((item, index) => {
           const active = isActive(item.path)
-          // Interchange icons: POS gets home icon
-          let displayIcon = item.icon
-          if (item.path === '/') {
-            displayIcon = '🏠' // POS menu item shows home icon
-          }
 
           const content = (
             <div
@@ -64,7 +60,7 @@ function Sidebar() {
               title={item.name}
               style={{ cursor: item.path ? 'pointer' : 'default' }}
             >
-              <span className="nav-icon">{displayIcon}</span>
+              <span className="nav-icon">{item.icon}</span>
             </div>
           )
 
@@ -76,15 +72,16 @@ function Sidebar() {
             )
           }
 
-          return item.path ? (
-            <Link key={index} to={item.path}>
-              {content}
-            </Link>
-          ) : (
-            <div key={index}>
-              {content}
-            </div>
-          )
+          if (item.path) {
+            return (
+              <Link key={index} to={item.path}>
+                {content}
+              </Link>
+            )
+          }
+
+          // This should never happen due to filtering, but just in case
+          return null
         })}
       </nav>
     </aside>

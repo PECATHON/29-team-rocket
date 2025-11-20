@@ -8,6 +8,7 @@
   gap: 24px;
   overflow: hidden;
   transition: background-color 0.3s ease;
+  animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .order-content {
@@ -49,13 +50,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .close-cart-button:hover {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
   color: #FFFFFF;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.close-cart-button:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 .order-type-tabs {
@@ -72,17 +78,25 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInDown 0.3s ease-out backwards;
 }
+
+.type-tab:nth-child(1) { animation-delay: 0.1s; }
+.type-tab:nth-child(2) { animation-delay: 0.15s; }
+.type-tab:nth-child(3) { animation-delay: 0.2s; }
 
 .type-tab:hover {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
+  transform: translateY(-2px);
 }
 
 .type-tab.active {
   background-color: var(--accent-color);
   color: #FFFFFF;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(234, 124, 105, 0.3);
 }
 
 .order-table {
@@ -129,7 +143,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  animation: fadeInUp 0.4s ease-out backwards;
 }
+
+.order-item:nth-child(1) { animation-delay: 0.1s; }
+.order-item:nth-child(2) { animation-delay: 0.15s; }
+.order-item:nth-child(3) { animation-delay: 0.2s; }
+.order-item:nth-child(4) { animation-delay: 0.25s; }
+.order-item:nth-child(5) { animation-delay: 0.3s; }
 
 .item-main {
   display: flex;
@@ -220,11 +241,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .qty-btn:hover {
   background-color: var(--bg-tertiary);
+  transform: scale(1.1);
+}
+
+.qty-btn:active {
+  transform: scale(0.9);
 }
 
 .qty-input {
@@ -307,14 +333,37 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.4s ease-out 0.3s backwards;
+}
+
+.payment-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.payment-button:hover::before {
+  width: 500px;
+  height: 500px;
 }
 
 .payment-button:hover {
   background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(234, 124, 105, 0.4);
 }
 
 .payment-button:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 

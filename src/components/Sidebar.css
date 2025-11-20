@@ -50,16 +50,32 @@
   justify-content: center;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: transparent;
+  animation: slideInLeft 0.4s ease-out backwards;
 }
+
+.nav-item:nth-child(1) { animation-delay: 0.1s; }
+.nav-item:nth-child(2) { animation-delay: 0.15s; }
+.nav-item:nth-child(3) { animation-delay: 0.2s; }
+.nav-item:nth-child(4) { animation-delay: 0.25s; }
+.nav-item:nth-child(5) { animation-delay: 0.3s; }
+.nav-item:nth-child(6) { animation-delay: 0.35s; }
+.nav-item:nth-child(7) { animation-delay: 0.4s; }
 
 .nav-item:hover {
   background-color: var(--bg-tertiary);
+  transform: translateX(4px) scale(1.05);
 }
 
 .nav-item.active {
   background-color: var(--accent-color);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(234, 124, 105, 0.3);
+}
+
+.nav-item:active {
+  transform: scale(0.95);
 }
 
 .nav-icon {

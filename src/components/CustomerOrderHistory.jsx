@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import './OrderReport.css'
+import './ReviewModal.css'
 
 function CustomerOrderHistory() {
   const [orders, setOrders] = useState([])
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [showReviewModal, setShowReviewModal] = useState(false)
+  const [reviewRating, setReviewRating] = useState(0)
+  const [reviewText, setReviewText] = useState('')
 
   useEffect(() => {
     // Load order history from localStorage
     const savedOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]')
+    // Load reviews from localStorage
+    const savedReviews = JSON.parse(localStorage.getItem('orderReviews') || '{}')
+    // Add review data to orders
+    const ordersWithReviews = savedOrders.map(order => ({
+      ...order,
+      review: savedReviews[order.id] || null
+    }))
     // Show most recent orders first, limit to 10
-    setOrders(savedOrders.slice(0, 10))
+    setOrders(ordersWithReviews.slice(0, 10))
   }, [])
 
   const formatDate = (dateString) => {
@@ -29,6 +41,59 @@ function CustomerOrderHistory() {
 
   const getStatusClass = (status) => {
     return 'status-completed' // All past orders are completed
+  }
+
+  const handleReviewClick = (order) => {
+    setSelectedOrder(order)
+    if (order.review) {
+      setReviewRating(order.review.rating)
+      setReviewText(order.review.text)
+    } else {
+      setReviewRating(0)
+      setReviewText('')
+    }
+    setShowReviewModal(true)
+  }
+
+  const handleSubmitReview = () => {
+    if (reviewRating === 0) {
+      alert('Please select a rating')
+      return
+    }
+
+    const reviews = JSON.parse(localStorage.getItem('orderReviews') || '{}')
+    reviews[selectedOrder.id] = {
+      rating: reviewRating,
+      text: reviewText,
+      date: new Date().toISOString()
+    }
+    localStorage.setItem('orderReviews', JSON.stringify(reviews))
+
+    // Update orders state
+    const updatedOrders = orders.map(order =>
+      order.id === selectedOrder.id
+        ? { ...order, review: reviews[selectedOrder.id] }
+        : order
+    )
+    setOrders(updatedOrders)
+    setShowReviewModal(false)
+  }
+
+  const renderStars = (rating, interactive = false, onStarClick = null) => {
+    return (
+      <div className="star-rating">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={`star ${star <= rating ? 'filled' : ''} ${interactive ? 'interactive' : ''}`}
+            onClick={interactive && onStarClick ? () => onStarClick(star) : undefined}
+            style={{ cursor: interactive ? 'pointer' : 'default' }}
+          >
+            ⭐
+          </span>
+        ))}
+      </div>
+    )
   }
 
   if (orders.length === 0) {
@@ -59,6 +124,7 @@ function CustomerOrderHistory() {
               <th>Date</th>
               <th>Total</th>
               <th>Status</th>
+              <th>Review</th>
             </tr>
           </thead>
           <tbody>
@@ -86,11 +152,68 @@ function CustomerOrderHistory() {
                     Completed
                   </span>
                 </td>
+                <td className="review-cell">
+                  {order.review ? (
+                    <div className="review-display">
+                      {renderStars(order.review.rating)}
+                      <button
+                        className="edit-review-btn"
+                        onClick={() => handleReviewClick(order)}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="add-review-btn"
+                      onClick={() => handleReviewClick(order)}
+                    >
+                      Rate & Review
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {showReviewModal && selectedOrder && (
+        <div className="review-modal-overlay" onClick={() => setShowReviewModal(false)}>
+          <div className="review-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="review-modal-header">
+              <h3>Rate Your Order #{selectedOrder.orderNumber}</h3>
+              <button className="close-modal-btn" onClick={() => setShowReviewModal(false)}>
+                ×
+              </button>
+            </div>
+            <div className="review-modal-body">
+              <div className="review-rating-section">
+                <label>Rating</label>
+                {renderStars(reviewRating, true, setReviewRating)}
+              </div>
+              <div className="review-text-section">
+                <label>Your Review</label>
+                <textarea
+                  className="review-textarea"
+                  placeholder="Share your experience with this order..."
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  rows="4"
+                />
+              </div>
+            </div>
+            <div className="review-modal-footer">
+              <button className="cancel-review-btn" onClick={() => setShowReviewModal(false)}>
+                Cancel
+              </button>
+              <button className="submit-review-btn" onClick={handleSubmitReview}>
+                Submit Review
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

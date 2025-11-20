@@ -23,8 +23,15 @@ function MainContent({ onAddToCart, onToggleCart, cartItemCount }) {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('Hot Dishes')
   const [selectedFilter, setSelectedFilter] = useState('Dine In')
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const filteredDishes = dishes.filter(dish => dish.category === activeCategory)
+  const filteredDishes = dishes.filter(dish => {
+    const matchesCategory = dish.category === activeCategory
+    const matchesSearch = searchQuery === '' ||
+      dish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      dish.category.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
 
   return (
     <main className="main-content">
@@ -33,7 +40,9 @@ function MainContent({ onAddToCart, onToggleCart, cartItemCount }) {
           <input
             type="text"
             className="search-input"
-            placeholder="Search for food, coffe, etc.."
+            placeholder="Search for food, coffee, etc.."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <span className="search-icon">🔍</span>
         </div>
