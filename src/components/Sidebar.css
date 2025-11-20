@@ -32,6 +32,14 @@
   align-items: center;
 }
 
+.sidebar-nav a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav-item {
   width: 56px;
   height: 56px;

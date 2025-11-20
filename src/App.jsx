@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import MainContent from './components/MainContent'
 import OrderSummary from './components/OrderSummary'
@@ -8,7 +9,6 @@ import Settings from './components/Settings'
 import './App.css'
 
 function App() {
-  const [currentView, setCurrentView] = useState('pos') // 'pos', 'dashboard', or 'settings'
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   // Placeholder image generator using SVG data URI
   const getPlaceholderImage = (width, height) => {
@@ -49,32 +49,35 @@ function App() {
 
   return (
     <div className="app">
-      <Sidebar currentView={currentView} onViewChange={setCurrentView} />
-      {currentView === 'dashboard' ? (
-        <Dashboard />
-      ) : currentView === 'settings' ? (
-        <Settings />
-      ) : (
-        <>
-          <MainContent onAddToCart={addToCart} />
-          <OrderSummary
-            items={cartItems}
-            onUpdateQuantity={updateQuantity}
-            onRemoveItem={removeFromCart}
-            subtotal={subtotal}
-            onOpenPayment={() => setShowPaymentModal(true)}
-          />
-          {showPaymentModal && (
-            <PaymentModal
-              items={cartItems}
-              subtotal={subtotal}
-              onClose={() => setShowPaymentModal(false)}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeFromCart}
-            />
-          )}
-        </>
-      )}
+      <Sidebar />
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <MainContent onAddToCart={addToCart} />
+              <OrderSummary
+                items={cartItems}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeFromCart}
+                subtotal={subtotal}
+                onOpenPayment={() => setShowPaymentModal(true)}
+              />
+              {showPaymentModal && (
+                <PaymentModal
+                  items={cartItems}
+                  subtotal={subtotal}
+                  onClose={() => setShowPaymentModal(false)}
+                  onUpdateQuantity={updateQuantity}
+                  onRemoveItem={removeFromCart}
+                />
+              )}
+            </>
+          }
+        />
+      </Routes>
     </div>
   )
 }

@@ -1,20 +1,25 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import './Sidebar.css'
 
-function Sidebar({ currentView, onViewChange }) {
+function Sidebar() {
+  const location = useLocation()
+  
   const menuItems = [
-    { icon: '🏠', name: 'Home', view: 'dashboard', active: currentView === 'dashboard' },
-    { icon: '🍽️', name: 'POS', view: 'pos', active: currentView === 'pos' },
-    { icon: '📊', name: 'Discount', view: null },
-    { icon: '🕒', name: 'History', view: null },
-    { icon: '⚙️', name: 'Settings', view: 'settings', active: currentView === 'settings' },
-    { icon: '↩️', name: 'Logout', view: null },
+    { icon: '🏠', name: 'Home', path: '/dashboard' },
+    { icon: '🍽️', name: 'POS', path: '/' },
+    { icon: '📊', name: 'Discount', path: null },
+    { icon: '🕒', name: 'History', path: null },
+    { icon: '⚙️', name: 'Settings', path: '/settings' },
+    { icon: '↩️', name: 'Logout', path: null },
   ]
 
-  const handleNavClick = (item) => {
-    if (item.view) {
-      onViewChange(item.view)
+  const isActive = (path) => {
+    if (!path) return false
+    if (path === '/') {
+      return location.pathname === '/'
     }
+    return location.pathname.startsWith(path)
   }
 
   return (
@@ -23,17 +28,28 @@ function Sidebar({ currentView, onViewChange }) {
         <div className="logo-icon">🍽️</div>
       </div>
       <nav className="sidebar-nav">
-        {menuItems.map((item, index) => (
-          <div
-            key={index}
-            className={`nav-item ${item.active ? 'active' : ''}`}
-            title={item.name}
-            onClick={() => handleNavClick(item)}
-            style={{ cursor: item.view ? 'pointer' : 'default' }}
-          >
-            <span className="nav-icon">{item.icon}</span>
-          </div>
-        ))}
+        {menuItems.map((item, index) => {
+          const active = isActive(item.path)
+          const content = (
+            <div
+              className={`nav-item ${active ? 'active' : ''}`}
+              title={item.name}
+              style={{ cursor: item.path ? 'pointer' : 'default' }}
+            >
+              <span className="nav-icon">{item.icon}</span>
+            </div>
+          )
+
+          return item.path ? (
+            <Link key={index} to={item.path}>
+              {content}
+            </Link>
+          ) : (
+            <div key={index}>
+              {content}
+            </div>
+          )
+        })}
       </nav>
     </aside>
   )
