@@ -1,0 +1,49 @@
+.add-dish-card {
+  width: 221px;
+  height: 299px;
+  background-color: #1F1D2B;
+  border: 1px dashed #EA7C69;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-dish-card:hover {
+  background-color: rgba(234, 124, 105, 0.1);
+  border-color: #ff8a75;
+}
+
+.add-dish-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-dish-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.plus-icon {
+  font-size: 24px;
+  font-weight: 300;
+  color: #EA7C69;
+  line-height: 1;
+}
+
+.add-dish-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #EA7C69;
+  margin: 0;
+  text-align: center;
+}
+

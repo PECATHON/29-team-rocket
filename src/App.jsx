@@ -4,10 +4,11 @@ import MainContent from './components/MainContent'
 import OrderSummary from './components/OrderSummary'
 import PaymentModal from './components/PaymentModal'
 import Dashboard from './components/Dashboard'
+import Settings from './components/Settings'
 import './App.css'
 
 function App() {
-  const [currentView, setCurrentView] = useState('pos') // 'pos' or 'dashboard'
+  const [currentView, setCurrentView] = useState('pos') // 'pos', 'dashboard', or 'settings'
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   // Placeholder image generator using SVG data URI
   const getPlaceholderImage = (width, height) => {
@@ -81,6 +82,8 @@ function App() {
       <Sidebar currentView={currentView} onViewChange={setCurrentView} />
       {currentView === 'dashboard' ? (
         <Dashboard />
+      ) : currentView === 'settings' ? (
+        <Settings />
       ) : (
         <>
           <MainContent onAddToCart={addToCart} />
