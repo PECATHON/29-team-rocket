@@ -2,14 +2,15 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .page-title {
   font-size: 28px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .settings-section {
@@ -21,8 +22,9 @@
 .section-title {
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .theme-options {
@@ -36,21 +38,21 @@
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background-color: #1F1D2B;
+  background-color: var(--bg-card);
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
 .theme-option:hover {
-  border-color: #EA7C69;
+  border-color: var(--accent-color);
 }
 
 .theme-option.active {
-  border-color: #EA7C69;
+  border-color: var(--accent-color);
   background-color: rgba(234, 124, 105, 0.1);
 }
 
@@ -58,7 +60,7 @@
   width: 120px;
   height: 80px;
   border-radius: 8px;
-  border: 1px solid #393C49;
+  border: 1px solid var(--border-color);
 }
 
 .dark-theme {
@@ -76,24 +78,24 @@
 
 .font-option {
   padding: 12px 24px;
-  background-color: #1F1D2B;
+  background-color: var(--bg-card);
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
 }
 
 .font-option:hover {
-  border-color: #EA7C69;
+  border-color: var(--accent-color);
 }
 
 .font-option.active {
-  border-color: #EA7C69;
+  border-color: var(--accent-color);
   background-color: rgba(234, 124, 105, 0.1);
-  color: #EA7C69;
+  color: var(--accent-color);
 }
 
 .settings-actions {
@@ -106,23 +108,28 @@
 .discard-button {
   padding: 14px 24px;
   background-color: transparent;
-  border: 1px solid #393C49;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.discard-button:hover {
-  border-color: #EA7C69;
-  color: #EA7C69;
+.discard-button:hover:not(:disabled) {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.discard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .save-button {
   padding: 14px 24px;
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
   border: none;
   border-radius: 8px;
   color: #FFFFFF;
@@ -132,7 +139,12 @@
   transition: all 0.2s;
 }
 
-.save-button:hover {
-  background-color: #e66b55;
+.save-button:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 

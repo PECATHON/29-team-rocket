@@ -1,12 +1,13 @@
 .order-summary {
   width: 409px;
   height: 100vh;
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   display: flex;
   flex-direction: column;
   padding: 24px;
   gap: 24px;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .order-content {
@@ -23,8 +24,9 @@
 .order-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 16px;
+  transition: color 0.3s ease;
 }
 
 .order-type-tabs {
@@ -37,7 +39,7 @@
   background-color: transparent;
   border: none;
   border-radius: 8px;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -45,12 +47,12 @@
 }
 
 .type-tab:hover {
-  background-color: #2D303E;
-  color: #FFFFFF;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .type-tab.active {
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
   color: #FFFFFF;
 }
 
@@ -67,10 +69,11 @@
   gap: 16px;
   padding-bottom: 16px;
   margin-bottom: 16px;
-  border-bottom: 1px solid #393C49;
+  border-bottom: 1px solid var(--border-color);
   font-size: 14px;
   font-weight: 600;
-  color: #ABBBC2;
+  color: var(--text-secondary);
+  transition: border-color 0.3s ease, color 0.3s ease;
 }
 
 .table-header span:last-child {
@@ -88,8 +91,9 @@
 
 .empty-cart {
   text-align: center;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   padding: 40px 20px;
+  transition: color 0.3s ease;
 }
 
 .order-item {
@@ -110,7 +114,8 @@
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
+  transition: background-color 0.3s ease;
 }
 
 .item-image img {
@@ -127,16 +132,18 @@
 .item-name {
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
 .item-price-single {
   font-size: 12px;
-  color: #ABBBC2;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .remove-item {
@@ -165,18 +172,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
   border-radius: 8px;
   padding: 4px;
+  transition: background-color 0.3s ease;
 }
 
 .qty-btn {
   width: 32px;
   height: 32px;
-  background-color: #393C49;
+  background-color: var(--border-color);
   border: none;
   border-radius: 6px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
@@ -187,7 +195,7 @@
 }
 
 .qty-btn:hover {
-  background-color: #454756;
+  background-color: var(--bg-tertiary);
 }
 
 .qty-input {
@@ -195,11 +203,12 @@
   height: 32px;
   background-color: transparent;
   border: none;
-  color: #FFFFFF;
+  color: var(--text-primary);
   text-align: center;
   font-size: 14px;
   font-weight: 500;
   outline: none;
+  transition: color 0.3s ease;
 }
 
 .qty-input::-webkit-inner-spin-button,
@@ -211,26 +220,28 @@
 .item-total {
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   min-width: 60px;
   text-align: right;
+  transition: color 0.3s ease;
 }
 
 .item-note {
   width: 100%;
   height: 36px;
-  background-color: #2D303E;
-  border: 1px solid #393C49;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 8px 12px;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   font-size: 12px;
   outline: none;
   margin-left: 72px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .item-note::placeholder {
-  color: #ABBBC2;
+  color: var(--text-secondary);
 }
 
 .order-totals {
@@ -238,26 +249,29 @@
   flex-direction: column;
   gap: 16px;
   padding-top: 16px;
-  border-top: 1px solid #393C49;
+  border-top: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  color: #ABBBC2;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .total-row.subtotal {
   font-size: 16px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .payment-button {
   width: 100%;
   height: 48px;
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
   border: none;
   border-radius: 8px;
   color: #FFFFFF;
@@ -268,7 +282,7 @@
 }
 
 .payment-button:hover {
-  background-color: #ff8a75;
+  background-color: var(--accent-hover);
 }
 
 .payment-button:active {

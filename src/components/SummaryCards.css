@@ -6,24 +6,26 @@
 }
 
 .summary-card {
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 24px;
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  transition: background-color 0.3s ease;
 }
 
 .card-icon {
   width: 56px;
   height: 56px;
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   flex-shrink: 0;
+  transition: background-color 0.3s ease;
 }
 
 .card-content {
@@ -36,15 +38,17 @@
 .card-title {
   font-size: 14px;
   font-weight: 500;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .card-value {
   font-size: 28px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .card-change {

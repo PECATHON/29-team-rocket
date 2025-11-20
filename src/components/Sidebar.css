@@ -1,23 +1,25 @@
 .sidebar {
   width: 104px;
   height: 100vh;
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 24px 0;
   gap: 24px;
+  transition: background-color 0.3s ease;
 }
 
 .sidebar-logo {
   width: 56px;
   height: 56px;
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .logo-icon {
@@ -53,11 +55,11 @@
 }
 
 .nav-item:hover {
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
 }
 
 .nav-item.active {
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
 }
 
 .nav-icon {

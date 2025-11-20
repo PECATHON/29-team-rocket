@@ -1,11 +1,12 @@
 .order-report {
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 24px;
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .order-report-header {
@@ -18,13 +19,14 @@
 .order-report-title {
   font-size: 20px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .filter-button {
   padding: 8px 16px;
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
   border: none;
   border-radius: 8px;
   color: #FFFFFF;
@@ -35,7 +37,7 @@
 }
 
 .filter-button:hover {
-  background-color: #ff8a75;
+  background-color: var(--accent-hover);
 }
 
 .order-report-table {
@@ -51,8 +53,9 @@
 .order-report-table thead {
   position: sticky;
   top: 0;
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   z-index: 10;
+  transition: background-color 0.3s ease;
 }
 
 .order-report-table th {
@@ -60,23 +63,25 @@
   padding: 12px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #ABBBC2;
-  border-bottom: 1px solid #393C49;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .order-report-table tbody tr {
-  border-bottom: 1px solid #393C49;
-  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s, border-color 0.3s ease;
 }
 
 .order-report-table tbody tr:hover {
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
 }
 
 .order-report-table td {
   padding: 16px 0;
   font-size: 14px;
-  color: #FFFFFF;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .customer-cell {
@@ -101,16 +106,19 @@
 
 .customer-name {
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .menu-cell {
-  color: #ABBBC2;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .payment-cell {
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .status-cell {

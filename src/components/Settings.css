@@ -3,17 +3,19 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #252836;
+  background-color: var(--bg-secondary);
   padding: 24px;
   overflow: hidden;
   margin-left: 104px;
+  transition: background-color 0.3s ease;
 }
 
 .settings-title {
   font-size: 28px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0 0 24px 0;
+  transition: color 0.3s ease;
 }
 
 .settings-container {

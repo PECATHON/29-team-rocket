@@ -1,9 +1,10 @@
 .most-ordered {
-  background-color: #1F1D2B;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 24px;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
 }
 
 .most-ordered-header {
@@ -16,19 +17,21 @@
 .most-ordered-title {
   font-size: 20px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .filter-dropdown {
   padding: 8px 12px;
-  background-color: #252836;
-  border: 1px solid #393C49;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
   outline: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .most-ordered-list {
@@ -50,7 +53,8 @@
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: #2D303E;
+  background-color: var(--bg-tertiary);
+  transition: background-color 0.3s ease;
 }
 
 .dish-image-small img {
@@ -67,26 +71,28 @@
 .dish-name-small {
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0 0 4px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
 .dish-count {
   font-size: 12px;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .view-all-button {
   width: 100%;
   padding: 12px;
   background-color: transparent;
-  border: 1px solid #EA7C69;
+  border: 1px solid var(--accent-color);
   border-radius: 8px;
-  color: #EA7C69;
+  color: var(--accent-color);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

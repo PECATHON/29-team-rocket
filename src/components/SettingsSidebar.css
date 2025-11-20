@@ -1,11 +1,12 @@
 .settings-sidebar {
   width: 275px;
-  background-color: #1F1D2B;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  transition: background-color 0.3s ease;
 }
 
 .settings-link {
@@ -60,21 +61,23 @@
 .settings-menu-text h3 {
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.3;
+  transition: color 0.3s ease;
 }
 
 .settings-menu-text h3.active-text {
-  color: #EA7C69;
+  color: var(--accent-color);
 }
 
 .settings-menu-text p {
   font-size: 12px;
   font-weight: 400;
-  color: #ABBBC2;
+  color: var(--text-secondary);
   margin: 0;
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 .settings-active-indicator {
@@ -84,7 +87,7 @@
   transform: translateY(-50%);
   width: 4px;
   height: 39px;
-  background-color: #EA7C69;
+  background-color: var(--accent-color);
   border-radius: 30px;
 }
 
