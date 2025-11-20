@@ -1,7 +1,46 @@
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import CustomerSummaryCards from './CustomerSummaryCards'
+import CustomerOrderHistory from './CustomerOrderHistory'
+import MostOrdered from './MostOrdered'
 import './History.css'
+import './Dashboard.css'
 
 function History() {
+  const { isCustomer } = useAuth()
+
+  // If customer, show Dashboard content
+  if (isCustomer) {
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    })
+
+    return (
+      <div className="dashboard">
+        <main className="dashboard-main">
+          <header className="dashboard-header">
+            <div className="dashboard-title">
+              <h1>My Dashboard</h1>
+              <p>{currentDate}</p>
+            </div>
+          </header>
+
+          <CustomerSummaryCards />
+
+          <CustomerOrderHistory />
+        </main>
+
+        <aside className="dashboard-right-panel">
+          <MostOrdered />
+        </aside>
+      </div>
+    )
+  }
+
+  // Original History component for vendors
   const [orders, setOrders] = useState([])
   const [filter, setFilter] = useState('all') // all, today, week, month
 

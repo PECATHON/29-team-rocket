@@ -15,7 +15,7 @@ function Sidebar() {
 
   // Base menu items
   const allMenuItems = [
-    { icon: '🏠', name: 'Home', path: '/dashboard' },
+    { icon: '🏠', name: 'Home', path: '/dashboard', vendorOnly: true },
     { icon: '🍽️', name: 'POS', path: '/' },
     { icon: '📊', name: 'Discount', path: null, vendorOnly: true },
     { icon: '🕒', name: 'History', path: '/history', customerOnly: true },
@@ -52,13 +52,19 @@ function Sidebar() {
       <nav className="sidebar-nav">
         {menuItems.map((item, index) => {
           const active = isActive(item.path)
+          // Interchange icons: POS gets home icon
+          let displayIcon = item.icon
+          if (item.path === '/') {
+            displayIcon = '🏠' // POS menu item shows home icon
+          }
+
           const content = (
             <div
               className={`nav-item ${active ? 'active' : ''}`}
               title={item.name}
               style={{ cursor: item.path ? 'pointer' : 'default' }}
             >
-              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-icon">{displayIcon}</span>
             </div>
           )
 
