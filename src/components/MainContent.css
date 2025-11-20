@@ -11,38 +11,71 @@
 .main-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 24px;
-}
-
-.header-title h1 {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-primary);
-  transition: color 0.3s ease;
-}
-
-.header-title p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+  gap: 16px;
+  padding: 20px 24px;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .search-container {
   position: relative;
-  width: 220px;
+  flex: 1;
+  max-width: none;
+}
+
+.cart-toggle-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.cart-toggle-button:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+.cart-icon {
+  font-size: 28px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--accent-color);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .search-input {
   width: 100%;
-  height: 48px;
+  height: 60px;
   background-color: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 14px 44px 14px 16px;
+  border-radius: 10px;
+  padding: 18px 52px 18px 24px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
@@ -53,10 +86,10 @@
 
 .search-icon {
   position: absolute;
-  right: 16px;
+  right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 22px;
   pointer-events: none;
 }
 
@@ -198,5 +231,60 @@
   font-size: 12px;
   color: var(--text-secondary);
   transition: color 0.3s ease;
+}
+
+.restaurant-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 32px 0;
+  padding: 24px;
+}
+
+.restaurant-icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 48px;
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(234, 124, 105, 0.3);
+  min-width: 200px;
+}
+
+.restaurant-icon-button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(234, 124, 105, 0.4);
+}
+
+.restaurant-icon-button:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.restaurant-icon {
+  font-size: 4rem;
+  line-height: 1;
+  animation: float 3s ease-in-out infinite;
+}
+
+.restaurant-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 

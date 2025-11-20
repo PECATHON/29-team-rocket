@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './OrderSummary.css'
 
-function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenPayment }) {
+function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenPayment, onClose }) {
   const [orderType, setOrderType] = useState('Dine In')
   const [orderNotes, setOrderNotes] = useState({})
 
@@ -21,7 +21,14 @@ function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenP
     <aside className="order-summary">
       <div className="order-content">
         <header className="order-header">
-          <h2>Orders #34562</h2>
+          <div className="order-header-top">
+            <h2>Orders #34562</h2>
+            {onClose && (
+              <button className="close-cart-button" onClick={onClose} title="Close">
+                ✕
+              </button>
+            )}
+          </div>
           <div className="order-type-tabs">
             {orderTypes.map((type) => (
               <button

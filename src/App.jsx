@@ -8,6 +8,8 @@ import Settings from './components/Settings'
 import History from './components/History'
 import Login from './components/Login'
 import FrontPage from './components/FrontPage'
+import RestaurantsList from './components/RestaurantsList'
+import RestaurantDetail from './components/RestaurantDetail'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
@@ -17,6 +19,7 @@ import './App.css'
 function App() {
   const { isVendor, isAuthenticated } = useAuth()
   const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [showCart, setShowCart] = useState(false)
   // Placeholder image generator using SVG data URI
   const getPlaceholderImage = (width, height) => {
     const svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#2D303E"/><circle cx="50%" cy="40%" r="6" fill="#ABBBC2" opacity="0.5"/><rect x="42%" y="52%" width="16%" height="12%" rx="2" fill="#ABBBC2" opacity="0.5"/></svg>`
@@ -105,14 +108,21 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <>
-                    <MainContent onAddToCart={addToCart} />
-                    <OrderSummary
-                      items={cartItems}
-                      onUpdateQuantity={updateQuantity}
-                      onRemoveItem={removeFromCart}
-                      subtotal={subtotal}
-                      onOpenPayment={() => setShowPaymentModal(true)}
+                    <MainContent 
+                      onAddToCart={addToCart} 
+                      onToggleCart={() => setShowCart(!showCart)}
+                      cartItemCount={cartItems.length}
                     />
+                    {showCart && (
+                      <OrderSummary
+                        items={cartItems}
+                        onUpdateQuantity={updateQuantity}
+                        onRemoveItem={removeFromCart}
+                        subtotal={subtotal}
+                        onOpenPayment={() => setShowPaymentModal(true)}
+                        onClose={() => setShowCart(false)}
+                      />
+                    )}
                     {showPaymentModal && (
                       <PaymentModal
                         items={cartItems}
@@ -130,6 +140,26 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/restaurants"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <RestaurantsList />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/restaurants/:id"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <RestaurantDetail />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={

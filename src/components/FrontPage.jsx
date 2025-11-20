@@ -31,7 +31,7 @@ function FrontPage() {
             </div>
             <h1 className="front-page-title">PEC BITE</h1>
             <p className="front-page-subtitle">TAP TRACK EAT REPEAT</p>
-          </div>
+          </div>``
 
           <div className="quote-section">
             <div className="quote-icon">"</div>

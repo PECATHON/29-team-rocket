@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './MainContent.css'
 
 // Placeholder image generator using SVG data URI
@@ -18,7 +19,8 @@ const dishes = [
 
 const categories = ['Hot Dishes', 'Cold Dishes', 'Soup', 'Grill', 'Appetizer', 'Dessert']
 
-function MainContent({ onAddToCart }) {
+function MainContent({ onAddToCart, onToggleCart, cartItemCount }) {
+  const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('Hot Dishes')
   const [selectedFilter, setSelectedFilter] = useState('Dine In')
 
@@ -27,10 +29,6 @@ function MainContent({ onAddToCart }) {
   return (
     <main className="main-content">
       <header className="main-header">
-        <div className="header-title">
-          <h1>Jaegar Resto</h1>
-          <p>Tuesday, 2 Feb 2021</p>
-        </div>
         <div className="search-container">
           <input
             type="text"
@@ -39,7 +37,24 @@ function MainContent({ onAddToCart }) {
           />
           <span className="search-icon">🔍</span>
         </div>
+        <button className="cart-toggle-button" onClick={onToggleCart}>
+          <span className="cart-icon">🛒</span>
+          {cartItemCount > 0 && (
+            <span className="cart-badge">{cartItemCount}</span>
+          )}
+        </button>
       </header>
+
+      {/* Restaurant Icon/Button */}
+      <div className="flex justify-center items-center my-4">
+        <button
+          onClick={() => navigate('/restaurants')}
+          className="flex flex-row items-center justify-center gap-2 px-6 py-3 bg-gradient-to-br from-[#EA7C69] to-[#e66b55] border-none rounded-lg cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:scale-105 active:scale-100 group"
+        >
+          <span className="text-2xl leading-none group-hover:scale-110 transition-transform">🍽️</span>
+          <span className="text-sm font-semibold text-white">Browse Restaurants</span>
+        </button>
+      </div>
 
       <nav className="category-nav">
         <div className="category-list">
