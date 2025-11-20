@@ -1,18 +1,19 @@
 services:
-  # Backend Service
+  # Backend Service (Already Deployed)
   - type: web
-    name: food-delivery-server
+    name: 29-team-rocket
     env: node
-    region: oregon
+    region: singapore
     plan: free
     buildCommand: npm install
     startCommand: npm start
     rootDir: server
+    autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 10000
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY
@@ -24,13 +25,13 @@ services:
   - type: web
     name: food-delivery-frontend
     env: node
-    region: oregon
+    region: singapore
     plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
+    autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
         value: production
       - key: VITE_API_URL
         sync: false
-
