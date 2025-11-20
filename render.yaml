@@ -1,0 +1,28 @@
+# Exported from Render on 2025-11-20T23:48:49Z
+version: "1"
+projects:
+- name: My project
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: 29-team-rocket
+      runtime: node
+      repo: https://github.com/PECATHON/29-team-rocket
+      plan: free
+      envVars:
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: PORT
+        sync: false
+      - key: NODE_ENV
+        sync: false
+      region: singapore
+      buildCommand: npm install
+      startCommand: npm start
+      autoDeployTrigger: commit
+      rootDir: server
