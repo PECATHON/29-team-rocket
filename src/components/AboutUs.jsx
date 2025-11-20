@@ -5,13 +5,13 @@ function AboutUs() {
   return (
     <div className="about-us">
       <h2 className="page-title">About Us</h2>
-      
+
       <div className="about-content">
         <div className="about-section">
-          <h3 className="section-title">Posly</h3>
+          <h3 className="section-title">Point of Sale System</h3>
           <p className="about-text">
-            Posly is a modern Point of Sale (POS) system designed to help restaurants 
-            manage their operations efficiently. Our platform provides comprehensive 
+            A modern Point of Sale (POS) system designed to help restaurants
+            manage their operations efficiently. Our platform provides comprehensive
             tools for order management, inventory tracking, and business analytics.
           </p>
         </div>
@@ -36,16 +36,16 @@ function AboutUs() {
         <div className="about-section">
           <h3 className="section-title">Contact</h3>
           <div className="contact-info">
-            <p><strong>Email:</strong> support@posly.com</p>
+            <p><strong>Email:</strong> support@example.com</p>
             <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-            <p><strong>Website:</strong> www.posly.com</p>
+            <p><strong>Website:</strong> www.example.com</p>
           </div>
         </div>
 
         <div className="about-section">
           <h3 className="section-title">Terms & Privacy</h3>
           <p className="about-text">
-            By using Posly, you agree to our Terms of Service and Privacy Policy. 
+            By using this system, you agree to our Terms of Service and Privacy Policy.
             We are committed to protecting your data and ensuring a secure experience.
           </p>
         </div>

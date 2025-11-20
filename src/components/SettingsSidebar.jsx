@@ -4,7 +4,7 @@ import './SettingsSidebar.css'
 
 function SettingsSidebar() {
   const location = useLocation()
-  
+
   const menuItems = [
     {
       id: 'appearance',
@@ -45,7 +45,7 @@ function SettingsSidebar() {
       id: 'about',
       icon: 'ℹ️',
       title: 'About Us',
-      description: 'Find out more about Posly',
+      description: 'Find out more about us',
       path: '/settings/about'
     }
   ]

@@ -148,3 +148,36 @@
   color: #FFB572;
 }
 
+.order-number {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.order-items-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-preview {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.more-items {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.empty-orders {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.empty-orders p {
+  font-size: 16px;
+  margin: 0;
+}
+

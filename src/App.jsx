@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Sidebar from './components/Sidebar'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import MainContent from './components/MainContent'
 import OrderSummary from './components/OrderSummary'
 import PaymentModal from './components/PaymentModal'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import History from './components/History'
+import Login from './components/Login'
+import ProtectedRoute from './components/ProtectedRoute'
+import VendorRoute from './components/VendorRoute'
+import AppLayout from './components/AppLayout'
+import { useAuth } from './contexts/AuthContext'
 import './App.css'
 
 function App() {
+  const { isVendor, isAuthenticated } = useAuth()
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   // Placeholder image generator using SVG data URI
   const getPlaceholderImage = (width, height) => {
@@ -89,34 +94,79 @@ function App() {
 
   return (
     <div className="app">
-      <Sidebar />
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings/*" element={<Settings />} />
-        <Route path="/history" element={<History />} />
         <Route
           path="/"
           element={
-            <>
-              <MainContent onAddToCart={addToCart} />
-              <OrderSummary
-                items={cartItems}
-                onUpdateQuantity={updateQuantity}
-                onRemoveItem={removeFromCart}
-                subtotal={subtotal}
-                onOpenPayment={() => setShowPaymentModal(true)}
-              />
-              {showPaymentModal && (
-                <PaymentModal
-                  items={cartItems}
-                  subtotal={subtotal}
-                  onClose={() => setShowPaymentModal(false)}
-                  onUpdateQuantity={updateQuantity}
-                  onRemoveItem={removeFromCart}
-                  onPaymentComplete={handlePaymentComplete}
-                />
-              )}
-            </>
+            !isAuthenticated ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <ProtectedRoute>
+                <AppLayout>
+                  <>
+                    <MainContent onAddToCart={addToCart} />
+                    <OrderSummary
+                      items={cartItems}
+                      onUpdateQuantity={updateQuantity}
+                      onRemoveItem={removeFromCart}
+                      subtotal={subtotal}
+                      onOpenPayment={() => setShowPaymentModal(true)}
+                    />
+                    {showPaymentModal && (
+                      <PaymentModal
+                        items={cartItems}
+                        subtotal={subtotal}
+                        onClose={() => setShowPaymentModal(false)}
+                        onUpdateQuantity={updateQuantity}
+                        onRemoveItem={removeFromCart}
+                        onPaymentComplete={handlePaymentComplete}
+                      />
+                    )}
+                  </>
+                </AppLayout>
+              </ProtectedRoute>
+            )
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <Dashboard />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings/*"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <Settings />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <History />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            !isAuthenticated ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <Navigate to={isVendor ? "/dashboard" : "/"} replace />
+            )
           }
         />
       </Routes>
