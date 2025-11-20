@@ -1,0 +1,42 @@
+.dashboard {
+  flex: 1;
+  display: flex;
+  height: 100vh;
+  background-color: #1F1D2B;
+  overflow: hidden;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-title h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.dashboard-title p {
+  font-size: 16px;
+  color: #ABBBC2;
+}
+
+.dashboard-right-panel {
+  width: 409px;
+  background-color: #252836;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+

@@ -1,0 +1,142 @@
+.order-report {
+  background-color: #252836;
+  border-radius: 8px;
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.order-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.order-report-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.filter-button {
+  padding: 8px 16px;
+  background-color: #EA7C69;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.filter-button:hover {
+  background-color: #ff8a75;
+}
+
+.order-report-table {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.order-report-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-report-table thead {
+  position: sticky;
+  top: 0;
+  background-color: #252836;
+  z-index: 10;
+}
+
+.order-report-table th {
+  text-align: left;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ABBBC2;
+  border-bottom: 1px solid #393C49;
+}
+
+.order-report-table tbody tr {
+  border-bottom: 1px solid #393C49;
+  transition: background-color 0.2s;
+}
+
+.order-report-table tbody tr:hover {
+  background-color: #2D303E;
+}
+
+.order-report-table td {
+  padding: 16px 0;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.customer-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #EA7C69;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.customer-name {
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.menu-cell {
+  color: #ABBBC2;
+}
+
+.payment-cell {
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.status-cell {
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.status-completed {
+  background-color: rgba(80, 209, 170, 0.2);
+  color: #50D1AA;
+}
+
+.status-badge.status-preparing {
+  background-color: rgba(146, 136, 224, 0.2);
+  color: #9288E0;
+}
+
+.status-badge.status-pending {
+  background-color: rgba(255, 182, 114, 0.2);
+  color: #FFB572;
+}
+

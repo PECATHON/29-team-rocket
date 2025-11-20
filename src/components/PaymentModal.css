@@ -1,0 +1,45 @@
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0;
+  overflow: hidden;
+}
+
+.payment-modal-popup {
+  width: 814px;
+  height: 834px;
+  max-height: 100vh;
+  background-color: #252836;
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+  display: flex;
+  margin: 0;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.payment-modal-content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+

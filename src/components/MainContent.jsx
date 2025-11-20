@@ -1,0 +1,93 @@
+import React, { useState } from 'react'
+import './MainContent.css'
+
+// Placeholder image generator using SVG data URI
+const getPlaceholderImage = (width, height) => {
+  const svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#2D303E"/><circle cx="50%" cy="40%" r="8" fill="#ABBBC2" opacity="0.5"/><rect x="40%" y="50%" width="20%" height="15%" rx="2" fill="#ABBBC2" opacity="0.5"/></svg>`
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`
+}
+
+const dishes = [
+  { id: 1, name: 'Spicy seasoned seafood noodles', price: 2.29, available: 20, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 2, name: 'Salted Pasta with mushroom sauce', price: 2.69, available: 11, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 3, name: 'Beef dumpling in hot and sour soup', price: 2.99, available: 16, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 4, name: 'Healthy noodle with spinach leaf', price: 3.29, available: 22, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 5, name: 'Hot spicy fried rice with omelet', price: 3.49, available: 13, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 6, name: 'Spicy instant noodle with special omelette', price: 3.59, available: 17, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+]
+
+const categories = ['Hot Dishes', 'Cold Dishes', 'Soup', 'Grill', 'Appetizer', 'Dessert']
+
+function MainContent({ onAddToCart }) {
+  const [activeCategory, setActiveCategory] = useState('Hot Dishes')
+  const [selectedFilter, setSelectedFilter] = useState('Dine In')
+
+  const filteredDishes = dishes.filter(dish => dish.category === activeCategory)
+
+  return (
+    <main className="main-content">
+      <header className="main-header">
+        <div className="header-title">
+          <h1>Jaegar Resto</h1>
+          <p>Tuesday, 2 Feb 2021</p>
+        </div>
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search for food, coffe, etc.."
+          />
+          <span className="search-icon">🔍</span>
+        </div>
+      </header>
+
+      <nav className="category-nav">
+        <div className="category-list">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`category-tab ${activeCategory === category ? 'active' : ''}`}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+        <div className="category-divider"></div>
+      </nav>
+
+      <div className="menu-section">
+        <div className="menu-header">
+          <h2>Choose Dishes</h2>
+          <select
+            className="filter-dropdown"
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+          >
+            <option value="Dine In">Dine In</option>
+            <option value="To Go">To Go</option>
+            <option value="Delivery">Delivery</option>
+          </select>
+        </div>
+
+        <div className="dishes-grid">
+          {filteredDishes.map((dish) => (
+            <div key={dish.id} className="dish-card" onClick={() => onAddToCart(dish)}>
+              <div className="dish-image">
+                <img src={dish.image} alt={dish.name} />
+              </div>
+              <div className="dish-info">
+                <h3 className="dish-name">{dish.name}</h3>
+                <div className="dish-price">${dish.price.toFixed(2)}</div>
+                <div className="dish-available">{dish.available} Bowls available</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}
+
+export default MainContent
+
