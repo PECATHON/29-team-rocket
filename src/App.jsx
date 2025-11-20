@@ -14,7 +14,7 @@ import ReviewsRatings from './components/ReviewsRatings'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
-import { useAuth } from './contexts/AuthContext'
+import { useAuth } from './context/AuthContext'
 import './App.css'
 
 function App() {

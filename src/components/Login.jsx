@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../context/AuthContext'
+import ErrorDialog from './ErrorDialog'
 import './Login.css'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('vendor') // 'vendor' or 'customer'
+  const [isSignup, setIsSignup] = useState(false)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [role, setRole] = useState('CUSTOMER') // Default role
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { login, isAuthenticated, user } = useAuth()
+
+  const { login, signup, isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Redirect if already authenticated
     if (isAuthenticated) {
-      if (user?.role === 'vendor') {
+      if (user?.role === 'RESTAURANT_OWNER' || user?.role === 'ADMIN') {
         navigate('/dashboard', { replace: true })
       } else {
         navigate('/', { replace: true })
@@ -26,30 +30,31 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-
-    if (!role) {
-      setError('Please select a login type')
-      return
-    }
-
     setIsLoading(true)
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const result = login(email, password, role)
-      setIsLoading(false)
-
-      if (result.success) {
-        // Redirect based on role
-        if (role === 'vendor') {
-          navigate('/dashboard')
-        } else {
-          navigate('/')
-        }
+    try {
+      let result;
+      if (isSignup) {
+        result = await signup({ name, email, phone, password, role })
       } else {
-        setError(result.error || 'Invalid credentials')
+        result = await login(email, password)
       }
-    }, 500)
+
+      if (result && result.success) {
+        // Navigation handled by useEffect
+        setError('') // Clear any previous errors
+      } else {
+        // Handle login/signup failure
+        const errorMessage = result?.error || result?.message || 'Invalid credentials. Please check your email and password and try again.'
+        setError(errorMessage)
+      }
+    } catch (err) {
+      // Handle unexpected errors
+      const errorMessage = err?.message || err?.error || 'An unexpected error occurred. Please try again.'
+      setError(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -59,29 +64,52 @@ function Login() {
           <div className="login-logo">
             <div className="logo-icon-large">🍽️</div>
           </div>
-          <p className="login-subtitle">Point of Sale System</p>
+          <p className="login-subtitle">
+            {isSignup ? 'Create an Account' : 'Login to your Account'}
+          </p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Login As</label>
-            <div className="role-selection">
-              <button
-                type="button"
-                className={`role-button ${role === 'vendor' ? 'active' : ''}`}
-                onClick={() => setRole('vendor')}
-              >
-                Vendor
-              </button>
-              <button
-                type="button"
-                className={`role-button ${role === 'customer' ? 'active' : ''}`}
-                onClick={() => setRole('customer')}
-              >
-                Customer
-              </button>
-            </div>
-          </div>
+          {isSignup && (
+            <>
+              <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  className="form-input"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="phone">Phone Number</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  className="form-input"
+                  placeholder="Enter your phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Role</label>
+                <select
+                  className="form-input"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="RESTAURANT_OWNER">Restaurant Owner</option>
+                  <option value="DELIVERY_PARTNER">Delivery Partner</option>
+                </select>
+              </div>
+            </>
+          )}
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -111,28 +139,38 @@ function Login() {
             />
           </div>
 
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-
           <button
             type="submit"
             className="login-button"
             disabled={isLoading}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? 'Processing...' : (isSignup ? 'Sign Up' : 'Login')}
           </button>
 
           <div className="login-hint">
-            <p className="hint-note">Use any email and password to login</p>
+            <p className="hint-note">
+              {isSignup ? 'Already have an account? ' : "Don't have an account? "}
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => setIsSignup(!isSignup)}
+                style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                {isSignup ? 'Login' : 'Sign Up'}
+              </button>
+            </p>
           </div>
         </form>
       </div>
+      {error && (
+        <ErrorDialog
+          isOpen={true}
+          message={error}
+          onClose={() => setError('')}
+        />
+      )}
     </div>
   )
 }
 
 export default Login
-
