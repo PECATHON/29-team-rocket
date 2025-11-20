@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import History from './components/History'
 import Login from './components/Login'
+import FrontPage from './components/FrontPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
@@ -99,7 +100,7 @@ function App() {
           path="/"
           element={
             !isAuthenticated ? (
-              <Navigate to="/login" replace />
+              <FrontPage />
             ) : (
               <ProtectedRoute>
                 <AppLayout>
@@ -163,7 +164,7 @@ function App() {
           path="*"
           element={
             !isAuthenticated ? (
-              <Navigate to="/login" replace />
+              <Navigate to="/" replace />
             ) : (
               <Navigate to={isVendor ? "/dashboard" : "/"} replace />
             )
