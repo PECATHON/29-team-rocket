@@ -29,8 +29,8 @@ function FrontPage() {
             <div className="front-page-logo">
               <div className="logo-icon-large">🍽️</div>
             </div>
-            <h1 className="front-page-title">Jaegar Resto</h1>
-            <p className="front-page-subtitle">Point of Sale System</p>
+            <h1 className="front-page-title">PEC BITE</h1>
+            <p className="front-page-subtitle">TAP TRACK EAT REPEAT</p>
           </div>
 
           <div className="quote-section">
@@ -38,7 +38,7 @@ function FrontPage() {
             <p className="quote-text">
               Good food is the foundation of genuine happiness
             </p>
-            <p className="quote-author">— Culinary Wisdom</p>
+            
           </div>
 
           <button 
