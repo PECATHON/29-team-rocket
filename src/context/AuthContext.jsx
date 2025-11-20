@@ -36,9 +36,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         try {
-            const { user } = await apiSignup(userData);
-            setUser(user);
-            return { success: true };
+            const response = await apiSignup(userData);
+            if (response && response.user) {
+                setUser(response.user);
+                return { success: true, user: response.user };
+            } else {
+                throw new Error('Invalid response from server');
+            }
         } catch (err) {
             setError(err.message);
             return { success: false, error: err.message };
@@ -51,9 +55,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         try {
-            const { user } = await apiLogin(email, password);
-            setUser(user);
-            return { success: true };
+            const response = await apiLogin(email, password);
+            if (response && response.user) {
+                setUser(response.user);
+                return { success: true, user: response.user };
+            } else {
+                throw new Error('Invalid response from server');
+            }
         } catch (err) {
             setError(err.message);
             return { success: false, error: err.message };

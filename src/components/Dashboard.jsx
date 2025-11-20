@@ -9,7 +9,7 @@ import CustomerOrderHistory from './CustomerOrderHistory'
 import './Dashboard.css'
 
 function Dashboard() {
-  const { isCustomer } = useAuth()
+  const { isVendor, isCustomer, user } = useAuth()
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     day: 'numeric',
@@ -17,7 +17,10 @@ function Dashboard() {
     year: 'numeric'
   })
 
-  if (isCustomer) {
+  // Since this route is protected by VendorRoute, we should only show vendor content
+  // But keep customer check as fallback in case component is used elsewhere
+
+  if (isCustomer && !isVendor) {
     return (
       <div className="dashboard">
         <main className="dashboard-main">
@@ -40,6 +43,7 @@ function Dashboard() {
     )
   }
 
+  // Vendor dashboard (default for /dashboard route)
   return (
     <div className="dashboard">
       <main className="dashboard-main">

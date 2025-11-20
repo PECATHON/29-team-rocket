@@ -16,7 +16,8 @@ function Sidebar() {
   // Base menu items
   const allMenuItems = [
     { icon: '🏠', name: 'Home', path: '/dashboard', vendorOnly: true },
-    { icon: '🍽️', name: 'POS', path: '/' },
+    { icon: '🍽️', name: 'POS', path: '/', customerOnly: true },
+    { icon: '🍕', name: 'Food Items', path: '/products', vendorOnly: true },
     { icon: '🕒', name: 'History', path: '/history', customerOnly: true },
     { icon: '⭐', name: 'Reviews & Ratings', path: '/reviews', customerOnly: true },
     { icon: '⚙️', name: 'Settings', path: '/settings' },

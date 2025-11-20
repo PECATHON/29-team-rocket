@@ -11,6 +11,7 @@ import FrontPage from './components/FrontPage'
 import RestaurantsList from './components/RestaurantsList'
 import RestaurantDetail from './components/RestaurantDetail'
 import ReviewsRatings from './components/ReviewsRatings'
+import ProductsManagement from './components/ProductsManagement'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
@@ -105,6 +106,8 @@ function App() {
           element={
             !isAuthenticated ? (
               <FrontPage />
+            ) : isVendor ? (
+              <Navigate to="/dashboard" replace />
             ) : (
               <ProtectedRoute>
                 <AppLayout>
@@ -164,11 +167,21 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <VendorRoute>
               <AppLayout>
                 <Dashboard />
               </AppLayout>
-            </ProtectedRoute>
+            </VendorRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <VendorRoute>
+              <AppLayout>
+                <ProductsManagement />
+              </AppLayout>
+            </VendorRoute>
           }
         />
         <Route

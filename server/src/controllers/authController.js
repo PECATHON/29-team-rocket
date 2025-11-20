@@ -1,5 +1,4 @@
-const prisma = require('../prisma');
-const { signToken, hashPassword, comparePassword } = require('../utils/auth');
+const { supabaseAdmin } = require('../supabase');
 
 const ALLOWED_ROLES = ['CUSTOMER', 'RESTAURANT_OWNER', 'DELIVERY_PARTNER', 'ADMIN'];
 
@@ -18,38 +17,75 @@ const signup = async (req, res) => {
             return res.status(400).json({ error: 'Invalid role' });
         }
 
-        // Check for existing user
-        const existingUser = await prisma.user.findFirst({
-            where: {
-                OR: [
-                    { email },
-                    { phone }
-                ]
-            }
-        });
+        // Check for existing user by email or phone
+        const { data: existingUsers } = await supabaseAdmin
+            .from('User')
+            .select('email, phone')
+            .or(`email.eq.${email},phone.eq.${phone}`)
+            .limit(1);
 
-        if (existingUser) {
+        if (existingUsers && existingUsers.length > 0) {
             return res.status(400).json({ error: 'User with this email or phone already exists' });
         }
 
-        // Hash password and create user
-        const passwordHash = await hashPassword(password);
-        const user = await prisma.user.create({
-            data: {
+        // Create user in Supabase Auth
+        const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+            email,
+            password,
+            email_confirm: true, // Auto-confirm email for now
+            user_metadata: {
                 name,
-                email,
                 phone,
-                passwordHash,
                 role
             }
         });
 
-        // Generate token
-        const token = signToken(user);
+        if (authError) {
+            console.error('Supabase auth error:', authError);
+            if (authError.message.includes('already registered')) {
+                return res.status(400).json({ error: 'User with this email already exists' });
+            }
+            return res.status(500).json({ error: 'Failed to create user account' });
+        }
 
-        // Return response (exclude passwordHash)
-        const { passwordHash: _, ...userWithoutPassword } = user;
-        res.status(201).json({ user: userWithoutPassword, token });
+        // Create user profile in User table
+        const { data: userProfile, error: profileError } = await supabaseAdmin
+            .from('User')
+            .insert({
+                id: authData.user.id,
+                name,
+                email,
+                phone,
+                role,
+                passwordHash: '' // Not needed with Supabase Auth, but keeping for compatibility
+            })
+            .select()
+            .single();
+
+        if (profileError) {
+            console.error('Profile creation error:', profileError);
+            // Rollback: delete auth user if profile creation fails
+            await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+            return res.status(500).json({ error: 'Failed to create user profile' });
+        }
+
+        // Get session token
+        const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (sessionError || !sessionData.session) {
+            return res.status(500).json({ error: 'Failed to create session' });
+        }
+
+        // Return response
+        const { passwordHash: _, ...userWithoutPassword } = userProfile;
+        res.status(201).json({
+            user: userWithoutPassword,
+            token: sessionData.session.access_token,
+            session: sessionData.session
+        });
 
     } catch (error) {
         console.error('Signup error:', error);
@@ -65,24 +101,34 @@ const login = async (req, res) => {
             return res.status(400).json({ error: 'Email and password are required' });
         }
 
-        // Find user
-        const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) {
+        // Sign in with Supabase Auth
+        const { data: authData, error: authError } = await supabaseAdmin.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (authError || !authData.user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Verify password
-        const isValid = await comparePassword(password, user.passwordHash);
-        if (!isValid) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
+        // Get user profile from User table
+        const { data: userProfile, error: profileError } = await supabaseAdmin
+            .from('User')
+            .select('*')
+            .eq('id', authData.user.id)
+            .single();
 
-        // Generate token
-        const token = signToken(user);
+        if (profileError || !userProfile) {
+            return res.status(404).json({ error: 'User profile not found' });
+        }
 
         // Return response
-        const { passwordHash: _, ...userWithoutPassword } = user;
-        res.json({ user: userWithoutPassword, token });
+        const { passwordHash: _, ...userWithoutPassword } = userProfile;
+        res.json({
+            user: userWithoutPassword,
+            token: authData.session.access_token,
+            session: authData.session
+        });
 
     } catch (error) {
         console.error('Login error:', error);
@@ -92,15 +138,21 @@ const login = async (req, res) => {
 
 const me = async (req, res) => {
     try {
-        const user = await prisma.user.findUnique({
-            where: { id: req.user.id }
-        });
+        // Get user from session (set by middleware)
+        const userId = req.user.id;
 
-        if (!user) {
+        // Get user profile
+        const { data: userProfile, error: profileError } = await supabaseAdmin
+            .from('User')
+            .select('*')
+            .eq('id', userId)
+            .single();
+
+        if (profileError || !userProfile) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const { passwordHash: _, ...userWithoutPassword } = user;
+        const { passwordHash: _, ...userWithoutPassword } = userProfile;
         res.json({ user: userWithoutPassword });
 
     } catch (error) {
@@ -109,8 +161,25 @@ const me = async (req, res) => {
     }
 };
 
+const logout = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        
+        if (token) {
+            // Sign out the session
+            await supabaseAdmin.auth.signOut();
+        }
+
+        res.json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error('Logout error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     signup,
     login,
-    me
+    me,
+    logout
 };

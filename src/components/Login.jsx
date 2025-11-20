@@ -18,10 +18,14 @@ function Login() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (user?.role === 'RESTAURANT_OWNER' || user?.role === 'ADMIN') {
+    if (isAuthenticated && user) {
+      // Navigate based on user role
+      console.log('User authenticated, role:', user.role); // Debug log
+      if (user.role === 'RESTAURANT_OWNER' || user.role === 'ADMIN') {
+        console.log('Navigating to dashboard for vendor');
         navigate('/dashboard', { replace: true })
-      } else {
+      } else if (user.role === 'CUSTOMER') {
+        console.log('Navigating to home for customer');
         navigate('/', { replace: true })
       }
     }
@@ -41,7 +45,8 @@ function Login() {
       }
 
       if (result && result.success) {
-        // Navigation handled by useEffect
+        // Wait for user state to update before navigation
+        // Navigation will be handled by useEffect when user state updates
         setError('') // Clear any previous errors
       } else {
         // Handle login/signup failure
@@ -97,15 +102,16 @@ function Login() {
                 />
               </div>
               <div className="form-group">
-                <label>Role</label>
+                <label htmlFor="role">Account Type</label>
                 <select
+                  id="role"
                   className="form-input"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
+                  required
                 >
                   <option value="CUSTOMER">Customer</option>
-                  <option value="RESTAURANT_OWNER">Restaurant Owner</option>
-                  <option value="DELIVERY_PARTNER">Delivery Partner</option>
+                  <option value="RESTAURANT_OWNER">Restaurant Owner (Vendor)</option>
                 </select>
               </div>
             </>
