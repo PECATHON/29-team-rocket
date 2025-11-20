@@ -1,0 +1,102 @@
+.your-restaurant {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  color: #FFFFFF;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.form-input,
+.form-textarea {
+  padding: 14px;
+  background-color: #1F1D2B;
+  border: 1px solid #393C49;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #EA7C69;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.discard-button {
+  padding: 14px 24px;
+  background-color: transparent;
+  border: 1px solid #393C49;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.discard-button:hover {
+  border-color: #EA7C69;
+  color: #EA7C69;
+}
+
+.save-button {
+  padding: 14px 24px;
+  background-color: #EA7C69;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-button:hover {
+  background-color: #e66b55;
+}
+

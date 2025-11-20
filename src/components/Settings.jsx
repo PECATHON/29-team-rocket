@@ -1,19 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import SettingsSidebar from './SettingsSidebar'
+import MenuAppearance from './MenuAppearance'
+import YourRestaurant from './YourRestaurant'
 import ProductsManagement from './ProductsManagement'
+import Notification from './Notification'
+import Security from './Security'
+import AboutUs from './AboutUs'
 import './Settings.css'
 
 function Settings() {
-  const [activeSection, setActiveSection] = useState('products')
-
   return (
     <div className="settings">
       <h1 className="settings-title">Settings</h1>
       <div className="settings-container">
-        <SettingsSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+        <SettingsSidebar />
         <div className="settings-content">
-          {activeSection === 'products' && <ProductsManagement />}
-          {/* Add other sections here as needed */}
+          <Routes>
+            <Route path="appearance" element={<MenuAppearance />} />
+            <Route path="restaurant" element={<YourRestaurant />} />
+            <Route path="products" element={<ProductsManagement />} />
+            <Route path="notifications" element={<Notification />} />
+            <Route path="security" element={<Security />} />
+            <Route path="about" element={<AboutUs />} />
+            <Route path="" element={<Navigate to="appearance" replace />} />
+          </Routes>
         </div>
       </div>
     </div>

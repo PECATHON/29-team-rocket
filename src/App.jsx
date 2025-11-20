@@ -52,7 +52,7 @@ function App() {
       <Sidebar />
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings/*" element={<Settings />} />
         <Route
           path="/"
           element={
