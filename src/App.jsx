@@ -84,19 +84,78 @@ function App() {
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
-  const handlePaymentComplete = (paymentData) => {
-    // Save order to history
-    saveOrderToHistory({
-      items: cartItems,
-      total: subtotal,
-      paymentMethod: paymentData.paymentMethod,
-      orderType: paymentData.orderType,
-      tableNo: paymentData.tableNo
-    })
-    // Clear cart
-    setCartItems([])
-    // Close modal
-    setShowPaymentModal(false)
+  const handlePaymentComplete = async (paymentData) => {
+    try {
+      // Check if cart items have valid UUIDs (from database)
+      // If items have numeric IDs, they're from hardcoded data and won't work with API
+      const hasValidIds = cartItems.every(item => {
+        // UUIDs are typically 36 characters with dashes, or check if it's a string UUID format
+        const idStr = String(item.id)
+        return idStr.length > 10 && (idStr.includes('-') || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idStr))
+      })
+
+      if (hasValidIds) {
+        // Create order via API
+        const { createOrder } = await import('./api/orders')
+        
+        // Convert cart items to order items format
+        const orderItems = cartItems.map(item => ({
+          menu_item_id: item.id,
+          quantity: item.quantity,
+          special_instructions: item.special_instructions || null
+        }))
+
+        const orderData = {
+          items: orderItems,
+          payment_method: paymentData.paymentMethod,
+          payment_status: 'paid',
+          delivery_address: paymentData.deliveryAddress || null,
+          delivery_instructions: paymentData.deliveryInstructions || null,
+          order_type: paymentData.orderType || 'delivery',
+          table_number: paymentData.tableNo || null
+        }
+
+        try {
+          await createOrder(orderData)
+        } catch (apiError) {
+          console.warn('API order creation failed, saving to localStorage only:', apiError)
+          // Continue to save to localStorage even if API fails
+        }
+      } else {
+        console.warn('Cart items have invalid IDs (hardcoded data). Saving to localStorage only.')
+      }
+      
+      // Always save to localStorage for backward compatibility
+      saveOrderToHistory({
+        items: cartItems,
+        total: subtotal,
+        paymentMethod: paymentData.paymentMethod,
+        orderType: paymentData.orderType,
+        tableNo: paymentData.tableNo
+      })
+      
+      // Clear cart
+      setCartItems([])
+      // Close modal
+      setShowPaymentModal(false)
+    } catch (error) {
+      console.error('Error in payment completion:', error)
+      // Still save to localStorage even if there's an error
+      try {
+        saveOrderToHistory({
+          items: cartItems,
+          total: subtotal,
+          paymentMethod: paymentData.paymentMethod,
+          orderType: paymentData.orderType,
+          tableNo: paymentData.tableNo
+        })
+        setCartItems([])
+        setShowPaymentModal(false)
+        alert('Order saved locally. Note: Some items may not be in the database.')
+      } catch (localError) {
+        alert('Failed to save order: ' + error.message)
+      }
+    }
   }
 
   return (

@@ -43,14 +43,58 @@ function History() {
   // Original History component for vendors
   const [orders, setOrders] = useState([])
   const [filter, setFilter] = useState('all') // all, today, week, month
+  const [loading, setLoading] = useState(true)
+  const { user } = useAuth()
 
   useEffect(() => {
-    // Load orders from localStorage
-    const savedOrders = localStorage.getItem('orderHistory')
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders))
+    fetchOrders()
+  }, [user, filter])
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true)
+      const { getOrders } = await import('../api/orders')
+      
+      const filters = {}
+      if (user?.role === 'CUSTOMER') {
+        filters.customer_id = user.id
+      } else if (user?.vendor_id) {
+        filters.vendor_id = user.vendor_id
+      }
+
+      const response = await getOrders(filters)
+      
+      // Transform API orders to match expected format
+      const transformedOrders = (response.orders || []).map(order => ({
+        id: order.id,
+        orderNumber: order.order_number,
+        date: order.created_at,
+        items: (order.order_items || []).map(item => ({
+          id: item.menu_item_id,
+          name: item.menu_items?.name || 'Unknown Item',
+          price: parseFloat(item.unit_price),
+          quantity: item.quantity,
+          image: item.menu_items?.image_url || null
+        })),
+        total: parseFloat(order.total_amount),
+        paymentMethod: order.payment_method || 'Unknown',
+        orderType: order.order_type || 'delivery',
+        tableNo: order.table_number,
+        status: order.status
+      }))
+      
+      setOrders(transformedOrders)
+    } catch (error) {
+      console.error('Error fetching orders:', error)
+      // Fallback to localStorage
+      const savedOrders = localStorage.getItem('orderHistory')
+      if (savedOrders) {
+        setOrders(JSON.parse(savedOrders))
+      }
+    } finally {
+      setLoading(false)
     }
-  }, [])
+  }
 
   const getPlaceholderImage = (width, height) => {
     const svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#2D303E"/><circle cx="50%" cy="40%" r="6" fill="#ABBBC2" opacity="0.5"/><rect x="42%" y="52%" width="16%" height="12%" rx="2" fill="#ABBBC2" opacity="0.5"/></svg>`
@@ -137,7 +181,12 @@ function History() {
       </div>
 
       <div className="history-content">
-        {filteredOrders.length === 0 ? (
+        {loading ? (
+          <div className="empty-history">
+            <div className="empty-icon">⏳</div>
+            <p>Loading orders...</p>
+          </div>
+        ) : filteredOrders.length === 0 ? (
           <div className="empty-history">
             <div className="empty-icon">🕒</div>
             <p>No orders found</p>
