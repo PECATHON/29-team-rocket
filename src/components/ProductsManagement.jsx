@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DishCard from './DishCard'
 import AddDishCard from './AddDishCard'
 import { getMenuItems, getCategories } from '../api/menuItems'
+import VendorSetupPrompt from './VendorSetupPrompt'
 import { useAuth } from '../context/AuthContext'
 import './ProductsManagement.css'
 
@@ -77,6 +78,7 @@ function ProductsManagement() {
 
   return (
     <div className="products-management">
+      <VendorSetupPrompt />
       <div className="products-header">
         <h2 className="products-title">Products Management</h2>
         <button className="manage-categories-button">

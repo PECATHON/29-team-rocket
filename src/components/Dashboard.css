@@ -45,3 +45,36 @@
   transition: background-color 0.3s ease;
 }
 
+.vendor-setup-message {
+  background: #2d303e;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.setup-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.vendor-setup-message h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0 0 0.5rem 0;
+}
+
+.vendor-setup-message p {
+  font-size: 0.875rem;
+  color: #abbbc2;
+  margin: 0.5rem 0;
+}
+
+.setup-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+

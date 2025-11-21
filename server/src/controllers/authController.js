@@ -48,6 +48,30 @@ const signup = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create user account' });
         }
 
+        // If RESTAURANT_OWNER, create vendor record first
+        let vendorId = null;
+        if (role === 'RESTAURANT_OWNER') {
+            const { data: vendor, error: vendorError } = await supabaseAdmin
+                .from('vendors')
+                .insert({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    address: null
+                })
+                .select()
+                .single();
+
+            if (vendorError) {
+                console.error('Vendor creation error:', vendorError);
+                // Rollback: delete auth user if vendor creation fails
+                await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+                return res.status(500).json({ error: 'Failed to create vendor profile' });
+            }
+
+            vendorId = vendor.id;
+        }
+
         // Create user profile in User table
         const { data: userProfile, error: profileError } = await supabaseAdmin
             .from('User')
@@ -57,6 +81,7 @@ const signup = async (req, res) => {
                 email,
                 phone,
                 role,
+                vendor_id: vendorId,
                 passwordHash: '' // Not needed with Supabase Auth, but keeping for compatibility
             })
             .select()
@@ -64,7 +89,10 @@ const signup = async (req, res) => {
 
         if (profileError) {
             console.error('Profile creation error:', profileError);
-            // Rollback: delete auth user if profile creation fails
+            // Rollback: delete vendor if created, and delete auth user
+            if (vendorId) {
+                await supabaseAdmin.from('vendors').delete().eq('id', vendorId);
+            }
             await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
             return res.status(500).json({ error: 'Failed to create user profile' });
         }

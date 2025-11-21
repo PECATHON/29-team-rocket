@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
+const vendorSetupRoutes = require('./routes/vendorSetupRoutes');
 const menuItemRoutes = require('./routes/menuItemRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
@@ -30,6 +31,7 @@ app.get('/api/health', async (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/protected', protectedRoutes);
 app.use('/api/vendors', vendorRoutes);
+app.use('/api/vendor-setup', vendorSetupRoutes);
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/chatbot', chatbotRoutes);
