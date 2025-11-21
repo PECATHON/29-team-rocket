@@ -95,11 +95,14 @@ function Login() {
                   id="phone"
                   type="tel"
                   className="form-input"
-                  placeholder="Enter your phone"
+                  placeholder="9876543210 (10 digits, +91 added automatically)"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   required
                 />
+                <small style={{ color: '#abbbc2', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                  Just enter your 10-digit number. The system will automatically add +91 for SMS.
+                </small>
               </div>
               <div className="form-group">
                 <label htmlFor="role">Account Type</label>
