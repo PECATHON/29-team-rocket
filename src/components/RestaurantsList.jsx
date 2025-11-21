@@ -8,12 +8,12 @@ const getPlaceholderImage = (width, height) => {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
-// Dummy restaurant data
+// Restaurant data with real photos
 const restaurants = [
   {
     id: 1,
     name: 'The Spice Garden',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop',
     rating: 4.5,
     vegType: 'Both',
     openingTime: '10:00 AM',
@@ -22,7 +22,7 @@ const restaurants = [
   {
     id: 2,
     name: 'Ocean Breeze Seafood',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=600&fit=crop',
     rating: 4.8,
     vegType: 'Non-Veg',
     openingTime: '11:00 AM',
@@ -31,7 +31,7 @@ const restaurants = [
   {
     id: 3,
     name: 'Green Leaf Cafe',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=600&fit=crop',
     rating: 4.3,
     vegType: 'Veg',
     openingTime: '8:00 AM',
@@ -40,7 +40,7 @@ const restaurants = [
   {
     id: 4,
     name: 'BBQ Masters',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=600&fit=crop',
     rating: 4.7,
     vegType: 'Non-Veg',
     openingTime: '12:00 PM',
@@ -49,7 +49,7 @@ const restaurants = [
   {
     id: 5,
     name: 'Vegan Delight',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=600&fit=crop',
     rating: 4.6,
     vegType: 'Veg',
     openingTime: '9:00 AM',
@@ -58,7 +58,7 @@ const restaurants = [
   {
     id: 6,
     name: 'Italian Corner',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop',
     rating: 4.4,
     vegType: 'Both',
     openingTime: '11:00 AM',
@@ -67,7 +67,7 @@ const restaurants = [
   {
     id: 7,
     name: 'Dragon Wok',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=800&h=600&fit=crop',
     rating: 4.5,
     vegType: 'Both',
     openingTime: '10:30 AM',
@@ -76,7 +76,7 @@ const restaurants = [
   {
     id: 8,
     name: 'Meat Lovers Paradise',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=800&h=600&fit=crop',
     rating: 4.9,
     vegType: 'Non-Veg',
     openingTime: '12:00 PM',
@@ -85,7 +85,7 @@ const restaurants = [
   {
     id: 9,
     name: 'Fresh & Healthy',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop',
     rating: 4.2,
     vegType: 'Veg',
     openingTime: '7:00 AM',
@@ -94,7 +94,7 @@ const restaurants = [
   {
     id: 10,
     name: 'Coastal Kitchen',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=600&fit=crop',
     rating: 4.6,
     vegType: 'Both',
     openingTime: '10:00 AM',
@@ -103,7 +103,7 @@ const restaurants = [
   {
     id: 11,
     name: 'Tandoor Express',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&h=600&fit=crop',
     rating: 4.7,
     vegType: 'Both',
     openingTime: '11:00 AM',
@@ -112,7 +112,7 @@ const restaurants = [
   {
     id: 12,
     name: 'Sushi House',
-    image: getPlaceholderImage(300, 200),
+    image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop',
     rating: 4.8,
     vegType: 'Non-Veg',
     openingTime: '12:00 PM',
