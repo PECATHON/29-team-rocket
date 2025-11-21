@@ -296,7 +296,7 @@ const updateOrderStatus = async (req, res) => {
         const userId = req.user?.id;
 
         // Valid statuses
-        const validStatuses = ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'cancelled'];
+        const validStatuses = ['pending', 'accepted', 'rejected', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'cancelled'];
         
         if (!status || !validStatuses.includes(status)) {
             return res.status(400).json({ error: `Status must be one of: ${validStatuses.join(', ')}` });

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
 import './OrderReport.css'
 import './ReviewModal.css'
 
 function CustomerOrderHistory() {
+  const { user } = useAuth()
   const [orders, setOrders] = useState([])
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [showReviewModal, setShowReviewModal] = useState(false)
@@ -10,18 +12,64 @@ function CustomerOrderHistory() {
   const [reviewText, setReviewText] = useState('')
 
   useEffect(() => {
-    // Load order history from localStorage
+    fetchOrders()
+    // Refresh every 15 seconds to get status updates
+    const interval = setInterval(fetchOrders, 15000)
+    return () => clearInterval(interval)
+  }, [user])
+
+  const fetchOrders = async () => {
+    try {
+      // Try to fetch from API first
+      const { getOrders } = await import('../api/orders')
+      
+      const filters = {}
+      if (user?.id) {
+        filters.customer_id = user.id
+      }
+
+      const response = await getOrders(filters)
+      
+      if (response.orders && response.orders.length > 0) {
+        // Transform API orders
+        const transformedOrders = response.orders.map(order => ({
+          id: order.id,
+          orderNumber: order.order_number,
+          date: order.created_at,
+          items: (order.order_items || []).map(item => ({
+            name: item.menu_items?.name || 'Unknown Item',
+            quantity: item.quantity,
+            price: parseFloat(item.unit_price)
+          })),
+          total: parseFloat(order.total_amount),
+          status: order.status,
+          paymentMethod: order.payment_method || 'Unknown'
+        }))
+        
+        // Load reviews from localStorage
+        const savedReviews = JSON.parse(localStorage.getItem('orderReviews') || '{}')
+        const ordersWithReviews = transformedOrders.map(order => ({
+          ...order,
+          review: savedReviews[order.id] || null
+        }))
+        
+        setOrders(ordersWithReviews.slice(0, 10))
+        return
+      }
+    } catch (error) {
+      console.error('Error fetching orders from API:', error)
+    }
+
+    // Fallback to localStorage
     const savedOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]')
-    // Load reviews from localStorage
     const savedReviews = JSON.parse(localStorage.getItem('orderReviews') || '{}')
-    // Add review data to orders
     const ordersWithReviews = savedOrders.map(order => ({
       ...order,
-      review: savedReviews[order.id] || null
+      review: savedReviews[order.id] || null,
+      status: order.status || 'pending'
     }))
-    // Show most recent orders first, limit to 10
     setOrders(ordersWithReviews.slice(0, 10))
-  }, [])
+  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -40,7 +88,38 @@ function CustomerOrderHistory() {
   }
 
   const getStatusClass = (status) => {
-    return 'status-completed' // All past orders are completed
+    switch (status) {
+      case 'pending':
+        return 'status-pending'
+      case 'accepted':
+      case 'confirmed':
+        return 'status-accepted'
+      case 'rejected':
+      case 'cancelled':
+        return 'status-rejected'
+      case 'preparing':
+        return 'status-preparing'
+      case 'ready':
+        return 'status-ready'
+      case 'delivered':
+        return 'status-delivered'
+      default:
+        return 'status-completed'
+    }
+  }
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'pending': return 'Pending Approval'
+      case 'accepted': return 'Accepted'
+      case 'rejected': return 'Rejected'
+      case 'confirmed': return 'Confirmed'
+      case 'preparing': return 'Preparing'
+      case 'ready': return 'Ready'
+      case 'delivered': return 'Delivered'
+      case 'cancelled': return 'Cancelled'
+      default: return 'Completed'
+    }
   }
 
   const handleReviewClick = (order) => {
@@ -148,8 +227,8 @@ function CustomerOrderHistory() {
                 <td className="payment-cell">{formatDate(order.date)}</td>
                 <td className="payment-cell">${order.total.toFixed(2)}</td>
                 <td className="status-cell">
-                  <span className={`status-badge ${getStatusClass('Completed')}`}>
-                    Completed
+                  <span className={`status-badge ${getStatusClass(order.status || 'completed')}`}>
+                    {getStatusLabel(order.status || 'completed')}
                   </span>
                 </td>
                 <td className="review-cell">

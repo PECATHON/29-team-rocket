@@ -2,6 +2,7 @@ import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import SummaryCards from './SummaryCards'
 import OrderReport from './OrderReport'
+import VendorOrderManagement from './VendorOrderManagement'
 import MostOrdered from './MostOrdered'
 import MostTypeOfOrder from './MostTypeOfOrder'
 import CustomerSummaryCards from './CustomerSummaryCards'
@@ -56,7 +57,7 @@ function Dashboard() {
 
         <SummaryCards />
 
-        <OrderReport />
+        <VendorOrderManagement />
       </main>
 
       <aside className="dashboard-right-panel">
