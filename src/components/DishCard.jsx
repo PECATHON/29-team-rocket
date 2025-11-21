@@ -97,7 +97,7 @@ function DishCard({ dish, onUpdated, onDeleted }) {
           <>
             <h3 className="dish-card-name">{dish.name}</h3>
             <div className="dish-card-meta">
-              <span className="dish-card-price">$ {dish.price.toFixed(2)}</span>
+              <span className="dish-card-price">₹ {dish.price.toFixed(2)}</span>
               <span className="dish-card-dot">•</span>
               <span className="dish-card-available">{dish.available} Bowls</span>
             </div>

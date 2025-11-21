@@ -1,4 +1,5 @@
 const { supabaseAdmin } = require('../supabase');
+const smsService = require('../services/smsService');
 
 /**
  * Create a new order
@@ -169,6 +170,44 @@ const createOrder = async (req, res) => {
             `)
             .eq('id', order.id)
             .single();
+
+        // Send SMS notifications (non-blocking)
+        (async () => {
+            try {
+                // Get customer details
+                const { data: customer } = await supabaseAdmin
+                    .from('User')
+                    .select('id, name, phone, email')
+                    .eq('id', userId)
+                    .single();
+
+                // Get vendor details if vendor_id exists
+                let vendor = null;
+                if (finalVendorId) {
+                    const { data: vendorData } = await supabaseAdmin
+                        .from('vendors')
+                        .select('id, name, phone, email')
+                        .eq('id', finalVendorId)
+                        .single();
+                    vendor = vendorData;
+                }
+
+                const orderForSMS = completeOrder || order;
+
+                // Send confirmation to customer
+                if (customer) {
+                    await smsService.sendOrderConfirmation(orderForSMS, customer);
+                }
+
+                // Send notification to vendor
+                if (vendor && customer) {
+                    await smsService.sendNewOrderNotification(orderForSMS, vendor, customer);
+                }
+            } catch (smsError) {
+                // Log but don't fail the order creation
+                console.error('SMS notification error (non-critical):', smsError);
+            }
+        })();
 
         res.status(201).json({ order: completeOrder || order });
     } catch (error) {
@@ -351,6 +390,43 @@ const updateOrderStatus = async (req, res) => {
                 status,
                 notes: notes || `Order status updated to ${status}`
             });
+
+        // Send SMS notification to customer (non-blocking)
+        (async () => {
+            try {
+                // Get customer details
+                const { data: customer } = await supabaseAdmin
+                    .from('User')
+                    .select('id, name, phone, email')
+                    .eq('id', existingOrder.customer_id)
+                    .single();
+
+                // Fetch complete order with items for SMS
+                const { data: completeOrder } = await supabaseAdmin
+                    .from('orders')
+                    .select(`
+                        *,
+                        order_items (
+                            *,
+                            menu_items (*)
+                        )
+                    `)
+                    .eq('id', id)
+                    .single();
+
+                if (customer && completeOrder) {
+                    await smsService.sendOrderStatusUpdate(
+                        completeOrder,
+                        customer,
+                        existingOrder.status,
+                        status
+                    );
+                }
+            } catch (smsError) {
+                // Log but don't fail the status update
+                console.error('SMS notification error (non-critical):', smsError);
+            }
+        })();
 
         res.json({ order });
     } catch (error) {

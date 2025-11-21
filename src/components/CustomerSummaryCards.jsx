@@ -55,7 +55,7 @@ function CustomerSummaryCards() {
     {
       id: 2,
       title: 'Total Spent',
-      value: `$${stats.totalSpent.toFixed(2)}`,
+      value: `₹${stats.totalSpent.toFixed(2)}`,
       change: '',
       trend: 'neutral',
       icon: '💳'

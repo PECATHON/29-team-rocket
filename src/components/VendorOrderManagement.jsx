@@ -205,7 +205,7 @@ function VendorOrderManagement() {
                         </span>
                         <span className="item-quantity">x{item.quantity}</span>
                         <span className="item-price">
-                          ${parseFloat(item.subtotal).toFixed(2)}
+                          ₹{parseFloat(item.subtotal).toFixed(2)}
                         </span>
                       </li>
                     ))}
@@ -218,7 +218,7 @@ function VendorOrderManagement() {
               <div className="order-details">
                 <div className="detail-row">
                   <span className="detail-label">Total:</span>
-                  <span className="detail-value">${parseFloat(order.total_amount).toFixed(2)}</span>
+                  <span className="detail-value">₹{parseFloat(order.total_amount).toFixed(2)}</span>
                 </div>
                 {order.order_type && (
                   <div className="detail-row">

@@ -111,7 +111,7 @@ function MainContent({ onAddToCart, onToggleCart, cartItemCount }) {
               </div>
               <div className="dish-info">
                 <h3 className="dish-name">{dish.name}</h3>
-                <div className="dish-price">${dish.price.toFixed(2)}</div>
+                <div className="dish-price">₹{dish.price.toFixed(2)}</div>
                 <div className="dish-available">{dish.available} Bowls available</div>
               </div>
             </div>

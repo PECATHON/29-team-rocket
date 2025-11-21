@@ -225,7 +225,7 @@ function CustomerOrderHistory() {
                   </div>
                 </td>
                 <td className="payment-cell">{formatDate(order.date)}</td>
-                <td className="payment-cell">${order.total.toFixed(2)}</td>
+                <td className="payment-cell">₹{order.total.toFixed(2)}</td>
                 <td className="status-cell">
                   <span className={`status-badge ${getStatusClass(order.status || 'completed')}`}>
                     {getStatusLabel(order.status || 'completed')}

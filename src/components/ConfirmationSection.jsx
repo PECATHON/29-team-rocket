@@ -43,7 +43,7 @@ function ConfirmationSection({ items, subtotal, onClose, onUpdateQuantity, onRem
                   </div>
                   <div className="item-details">
                     <h4 className="item-name">{item.name}</h4>
-                    <div className="item-price-single">${item.price.toFixed(2)}</div>
+                    <div className="item-price-single">₹{item.price.toFixed(2)}</div>
                   </div>
                   <button
                     className="remove-item"
@@ -57,7 +57,7 @@ function ConfirmationSection({ items, subtotal, onClose, onUpdateQuantity, onRem
                   <div className="quantity-display">
                     <div className="qty-box">{item.quantity}</div>
                   </div>
-                  <div className="item-total">${(item.price * item.quantity).toFixed(2)}</div>
+                  <div className="item-total">₹{(item.price * item.quantity).toFixed(2)}</div>
                 </div>
                 <input
                   type="text"
@@ -75,11 +75,11 @@ function ConfirmationSection({ items, subtotal, onClose, onUpdateQuantity, onRem
           <div className="confirmation-divider-top"></div>
           <div className="total-row">
             <span>Discount</span>
-            <span>$0</span>
+            <span>₹0</span>
           </div>
           <div className="total-row subtotal">
             <span>Sub total</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
         </div>
       </div>

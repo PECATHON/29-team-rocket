@@ -6,7 +6,7 @@ function SummaryCards() {
     {
       id: 1,
       title: 'Total Revenue',
-      value: '$10,243.00',
+      value: '₹10,243.00',
       change: '+32.40%',
       trend: 'up',
       icon: '💰'

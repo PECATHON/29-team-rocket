@@ -206,7 +206,7 @@ function ReviewsRatings() {
                     <h3 className="review-order-number">Order #{order.orderNumber}</h3>
                     <span className="review-order-date">{formatDate(order.date)}</span>
                   </div>
-                  <div className="review-order-total">${order.total.toFixed(2)}</div>
+                  <div className="review-order-total">₹{order.total.toFixed(2)}</div>
                 </div>
 
                 <div className="review-order-items">

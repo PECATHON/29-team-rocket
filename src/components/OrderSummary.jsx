@@ -61,7 +61,7 @@ function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenP
                     </div>
                     <div className="item-details">
                       <h4 className="item-name">{item.name}</h4>
-                      <div className="item-price-single">${item.price.toFixed(2)}</div>
+                      <div className="item-price-single">₹{item.price.toFixed(2)}</div>
                     </div>
                     <button
                       className="remove-item"
@@ -93,7 +93,7 @@ function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenP
                         +
                       </button>
                     </div>
-                    <div className="item-total">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="item-total">₹{(item.price * item.quantity).toFixed(2)}</div>
                   </div>
                   <input
                     type="text"
@@ -111,11 +111,11 @@ function OrderSummary({ items, onUpdateQuantity, onRemoveItem, subtotal, onOpenP
         <div className="order-totals">
           <div className="total-row">
             <span>Discount</span>
-            <span>$0</span>
+            <span>₹0</span>
           </div>
           <div className="total-row subtotal">
             <span>Sub total</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
         </div>
       </div>

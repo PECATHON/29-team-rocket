@@ -176,7 +176,7 @@ function History() {
         </div>
         <div className="stat-card">
           <span className="stat-label">Total Revenue</span>
-          <span className="stat-value">${totalRevenue.toFixed(2)}</span>
+          <span className="stat-value">₹{totalRevenue.toFixed(2)}</span>
         </div>
       </div>
 
@@ -225,7 +225,7 @@ function History() {
                         <span className="history-item-quantity">x{item.quantity}</span>
                       </div>
                       <span className="history-item-price">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ₹{(item.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -237,7 +237,7 @@ function History() {
                   </div>
                   <div className="order-total">
                     <span className="total-label">Total:</span>
-                    <span className="total-amount">${order.total.toFixed(2)}</span>
+                    <span className="total-amount">₹{order.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
