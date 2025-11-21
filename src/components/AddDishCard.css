@@ -1,6 +1,6 @@
 .add-dish-card {
-  width: 221px;
-  height: 299px;
+  width: 100%;
+  height: 300px;
   background-color: #1F1D2B;
   border: 1px dashed #EA7C69;
   border-radius: 8px;
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .add-dish-icon {

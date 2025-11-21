@@ -43,6 +43,20 @@ function ProductsManagement() {
       price: 2.69,
       available: 20,
       category: 'Hot Dishes'
+    },
+    {
+      id: 6,
+      name: 'Beef dumpling in hot and sour soup',
+      price: 2.99,
+      available: 16,
+      category: 'Hot Dishes'
+    },
+    {
+      id: 7,
+      name: 'Healthy noodle with spinach leaf',
+      price: 3.29,
+      available: 22,
+      category: 'Hot Dishes'
     }
   ]
 
