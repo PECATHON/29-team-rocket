@@ -317,7 +317,18 @@
   box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
 }
 
+.delivered-btn {
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  color: white;
+}
+
+.delivered-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
+}
+
 .ready-notification,
+.delivered-notification,
 .rejected-notification {
   display: flex;
   align-items: center;
@@ -334,13 +345,20 @@
   border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
+.delivered-notification {
+  background: rgba(156, 39, 176, 0.2);
+  color: #9c27b0;
+  border: 1px solid rgba(156, 39, 176, 0.3);
+}
+
 .rejected-notification {
   background: rgba(244, 67, 54, 0.2);
   color: #f44336;
   border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
-.ready-icon {
+.ready-icon,
+.delivered-icon {
   font-size: 1.125rem;
 }
 

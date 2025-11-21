@@ -73,6 +73,7 @@ const createOrder = async (req, res) => {
         const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
         // Determine vendor_id if not provided (from first menu item)
+        // But allow orders without vendor_id so any vendor can claim them
         let finalVendorId = vendor_id;
         if (!finalVendorId && orderItems.length > 0) {
             const { data: firstMenuItem } = await supabaseAdmin
@@ -81,10 +82,12 @@ const createOrder = async (req, res) => {
                 .eq('id', orderItems[0].menu_item_id)
                 .single();
 
-            if (firstMenuItem) {
+            if (firstMenuItem && firstMenuItem.vendor_id) {
                 finalVendorId = firstMenuItem.vendor_id;
             }
         }
+        // If no vendor_id found, order will be created without vendor_id
+        // Any vendor can then accept and claim the order
 
         // Create order
         const { data: order, error: orderError } = await supabaseAdmin
@@ -199,10 +202,13 @@ const createOrder = async (req, res) => {
                     await smsService.sendOrderConfirmation(orderForSMS, customer);
                 }
 
-                // Send notification to vendor
+                // Send notification to vendor (if order has a vendor_id)
+                // If no vendor_id, order is available for any vendor to claim
                 if (vendor && customer) {
                     await smsService.sendNewOrderNotification(orderForSMS, vendor, customer);
                 }
+                // Note: If order has no vendor_id, no vendor SMS is sent
+                // Vendors will see the order in their dashboard and can accept it
             } catch (smsError) {
                 // Log but don't fail the order creation
                 console.error('SMS notification error (non-critical):', smsError);
@@ -245,20 +251,12 @@ const getOrders = async (req, res) => {
             query = query.eq('customer_id', userId);
         }
 
+        // Allow vendors to see all orders (not filtered by vendor_id)
+        // Only filter by vendor_id if explicitly requested in query params
         if (vendor_id) {
             query = query.eq('vendor_id', vendor_id);
-        } else if (userId && req.user?.role === 'RESTAURANT_OWNER') {
-            // Auto-filter by vendor if restaurant owner
-            const { data: user } = await supabaseAdmin
-                .from('User')
-                .select('vendor_id')
-                .eq('id', userId)
-                .single();
-
-            if (user?.vendor_id) {
-                query = query.eq('vendor_id', user.vendor_id);
-            }
         }
+        // Removed auto-filtering by vendor_id - vendors can now see all orders
 
         if (status) {
             query = query.eq('status', status);
@@ -311,9 +309,10 @@ const getOrderById = async (req, res) => {
         // Verify user has permission to view this order
         if (userId) {
             const isCustomer = req.user?.role === 'CUSTOMER' && order.customer_id === userId;
-            const isVendor = req.user?.role === 'RESTAURANT_OWNER' && order.vendor_id;
+            const isVendor = req.user?.role === 'RESTAURANT_OWNER'; // Any vendor can view any order
+            const isAdmin = req.user?.role === 'ADMIN';
             
-            if (req.user?.role !== 'ADMIN' && !isCustomer && !isVendor) {
+            if (!isAdmin && !isCustomer && !isVendor) {
                 return res.status(403).json({ error: 'You do not have permission to view this order' });
             }
         }
@@ -353,26 +352,43 @@ const updateOrderStatus = async (req, res) => {
         }
 
         // Verify user has permission
+        // Allow any vendor to update any order
         if (userId) {
-            const isVendor = req.user?.role === 'RESTAURANT_OWNER' && existingOrder.vendor_id;
+            const isVendor = req.user?.role === 'RESTAURANT_OWNER';
+            const isAdmin = req.user?.role === 'ADMIN';
+            const isCustomer = req.user?.role === 'CUSTOMER' && existingOrder.customer_id === userId;
+            
+            // Only allow vendors and admins to update order status
+            // Customers can only view their orders, not update status
+            if (!isAdmin && !isVendor) {
+                return res.status(403).json({ error: 'You do not have permission to update this order' });
+            }
+        }
+
+        // When vendor accepts an order, assign it to them
+        let updateData = {
+            status,
+            updated_at: new Date().toISOString()
+        };
+
+        // If vendor is accepting an order and order doesn't have a vendor_id, assign it to them
+        if (status === 'accepted' && userId && req.user?.role === 'RESTAURANT_OWNER') {
             const { data: user } = await supabaseAdmin
                 .from('User')
                 .select('vendor_id')
                 .eq('id', userId)
                 .single();
 
-            if (req.user?.role !== 'ADMIN' && !isVendor && user?.vendor_id !== existingOrder.vendor_id) {
-                return res.status(403).json({ error: 'You do not have permission to update this order' });
+            // If order doesn't have a vendor_id yet, assign it to the accepting vendor
+            if (!existingOrder.vendor_id && user?.vendor_id) {
+                updateData.vendor_id = user.vendor_id;
             }
         }
 
         // Update order status
         const { data: order, error } = await supabaseAdmin
             .from('orders')
-            .update({
-                status,
-                updated_at: new Date().toISOString()
-            })
+            .update(updateData)
             .eq('id', id)
             .select()
             .single();

@@ -22,9 +22,8 @@ function VendorOrderManagement() {
       setLoading(true);
       const filters = {};
       
-      if (user?.vendor_id) {
-        filters.vendor_id = user.vendor_id;
-      }
+      // Don't filter by vendor_id - show all orders to all vendors
+      // Any vendor can see and manage any order
 
       if (filter !== 'all') {
         filters.status = filter;
@@ -78,6 +77,12 @@ function VendorOrderManagement() {
   const handleMarkReady = (orderId) => {
     if (window.confirm('Mark this order as ready? Customer will be notified.')) {
       handleStatusUpdate(orderId, 'ready', 'Order is ready for pickup/delivery');
+    }
+  };
+
+  const handleMarkDelivered = (orderId) => {
+    if (window.confirm('Mark this order as delivered? This will complete the order.')) {
+      handleStatusUpdate(orderId, 'delivered', 'Order has been delivered');
     }
   };
 
@@ -162,6 +167,12 @@ function VendorOrderManagement() {
             onClick={() => setFilter('ready')}
           >
             Ready
+          </button>
+          <button
+            className={`filter-btn ${filter === 'delivered' ? 'active' : ''}`}
+            onClick={() => setFilter('delivered')}
+          >
+            Delivered
           </button>
           <button
             className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
@@ -281,9 +292,25 @@ function VendorOrderManagement() {
                 )}
 
                 {order.status === 'ready' && (
-                  <div className="ready-notification">
-                    <span className="ready-icon">✓</span>
-                    <span>Customer has been notified</span>
+                  <>
+                    <button
+                      className="action-btn delivered-btn"
+                      onClick={() => handleMarkDelivered(order.id)}
+                      disabled={updating[order.id]}
+                    >
+                      {updating[order.id] ? 'Processing...' : '✓ Mark as Delivered'}
+                    </button>
+                    <div className="ready-notification">
+                      <span className="ready-icon">✓</span>
+                      <span>Customer has been notified</span>
+                    </div>
+                  </>
+                )}
+
+                {order.status === 'delivered' && (
+                  <div className="delivered-notification">
+                    <span className="delivered-icon">✓</span>
+                    <span>Order completed and delivered</span>
                   </div>
                 )}
 
