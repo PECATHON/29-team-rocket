@@ -88,7 +88,8 @@ class SMSService {
             console.log('✅ SMS sent successfully:', {
                 to: formattedTo,
                 sid: response.data.sid,
-                status: response.data.status
+                status: response.data.status,
+                message: message.substring(0, 50) + '...'
             });
 
             return {

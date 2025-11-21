@@ -371,7 +371,7 @@ const updateOrderStatus = async (req, res) => {
             updated_at: new Date().toISOString()
         };
 
-        // If vendor is accepting an order and order doesn't have a vendor_id, assign it to them
+        // If vendor is accepting an order, assign it to them
         if (status === 'accepted' && userId && req.user?.role === 'RESTAURANT_OWNER') {
             const { data: user } = await supabaseAdmin
                 .from('User')
@@ -379,9 +379,12 @@ const updateOrderStatus = async (req, res) => {
                 .eq('id', userId)
                 .single();
 
-            // If order doesn't have a vendor_id yet, assign it to the accepting vendor
-            if (!existingOrder.vendor_id && user?.vendor_id) {
+            // Assign order to accepting vendor (even if already assigned - allows reassignment)
+            if (user?.vendor_id) {
                 updateData.vendor_id = user.vendor_id;
+                console.log(`📦 Order ${id} assigned to vendor ${user.vendor_id}`);
+            } else {
+                console.warn(`⚠️ Vendor user ${userId} does not have vendor_id set`);
             }
         }
 
@@ -395,8 +398,13 @@ const updateOrderStatus = async (req, res) => {
 
         if (error) {
             console.error('Update order status error:', error);
-            return res.status(500).json({ error: 'Failed to update order status' });
+            return res.status(500).json({ 
+                error: 'Failed to update order status',
+                details: error.message 
+            });
         }
+
+        console.log(`✅ Order ${id} status updated: ${existingOrder.status} → ${status}`);
 
         // Create tracking entry
         await supabaseAdmin
@@ -407,7 +415,7 @@ const updateOrderStatus = async (req, res) => {
                 notes: notes || `Order status updated to ${status}`
             });
 
-        // Send SMS notification to customer (non-blocking)
+        // Send SMS notifications (non-blocking)
         (async () => {
             try {
                 // Get customer details
@@ -430,6 +438,7 @@ const updateOrderStatus = async (req, res) => {
                     .eq('id', id)
                     .single();
 
+                // Send SMS to customer about status update
                 if (customer && completeOrder) {
                     await smsService.sendOrderStatusUpdate(
                         completeOrder,
@@ -437,6 +446,33 @@ const updateOrderStatus = async (req, res) => {
                         existingOrder.status,
                         status
                     );
+                }
+
+                // If vendor accepted the order, send SMS to the accepting vendor
+                if (status === 'accepted' && userId && req.user?.role === 'RESTAURANT_OWNER') {
+                    const { data: user } = await supabaseAdmin
+                        .from('User')
+                        .select('vendor_id')
+                        .eq('id', userId)
+                        .single();
+
+                    if (user?.vendor_id) {
+                        // Get vendor details
+                        const { data: acceptingVendor } = await supabaseAdmin
+                            .from('vendors')
+                            .select('id, name, phone, email')
+                            .eq('id', user.vendor_id)
+                            .single();
+
+                        // Send new order notification to accepting vendor
+                        if (acceptingVendor && customer && completeOrder) {
+                            await smsService.sendNewOrderNotification(
+                                completeOrder,
+                                acceptingVendor,
+                                customer
+                            );
+                        }
+                    }
                 }
             } catch (smsError) {
                 // Log but don't fail the status update
