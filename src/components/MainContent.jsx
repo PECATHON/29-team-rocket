@@ -1,6 +1,15 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './MainContent.css'
+import noodlesImg from '../assets/noodles.png';
+import pasta from '../assets/veg_pasta.png';
+import manchurian from '../assets/vegm.png';
+import bhature from '../assets/chole.png';
+import bhaji from '../assets/pav.png';
+import dosa from '../assets/sambar.png';
+
+
+
 
 // Placeholder image generator using SVG data URI
 const getPlaceholderImage = (width, height) => {
@@ -9,12 +18,12 @@ const getPlaceholderImage = (width, height) => {
 }
 
 const dishes = [
-  { id: 1, name: 'Spicy seasoned seafood noodles', price: 2.29, available: 20, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
-  { id: 2, name: 'Salted Pasta with mushroom sauce', price: 2.69, available: 11, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
-  { id: 3, name: 'Beef dumpling in hot and sour soup', price: 2.99, available: 16, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
-  { id: 4, name: 'Healthy noodle with spinach leaf', price: 3.29, available: 22, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
-  { id: 5, name: 'Hot spicy fried rice with omelet', price: 3.49, available: 13, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
-  { id: 6, name: 'Spicy instant noodle with special omelette', price: 3.59, available: 17, image: getPlaceholderImage(192, 130), category: 'Hot Dishes' },
+  { id: 1, name: 'Spicy seasoned noodles', price: 2.29, available: 20, image: noodlesImg, category: 'Hot Dishes' },
+  { id: 2, name: 'Salted Pasta with mushroom sauce', price: 2.69, available: 11, image: pasta, category: 'Hot Dishes' },
+  { id: 3, name: 'Veg Manchurian', price: 2.99, available: 16, image: manchurian, category: 'Hot Dishes' },
+  { id: 4, name: 'Chole Bhature', price: 3.29, available: 22, image: bhature, category: 'Hot Dishes' },
+  { id: 5, name: 'Pav Bhaji', price: 3.49, available: 13, image: bhaji, category: 'Hot Dishes' },
+  { id: 6, name: 'Sambar Dosa', price: 3.59, available: 17, image: dosa, category: 'Hot Dishes' },
 ]
 
 const categories = ['Hot Dishes', 'Cold Dishes', 'Soup', 'Grill', 'Appetizer', 'Dessert']
