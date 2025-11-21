@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 const { testSupabaseConnection } = require('./utils/testConnection');
 
 const app = express();
@@ -27,6 +28,7 @@ app.get('/api/health', async (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/protected', protectedRoutes);
 app.use('/api/vendors', vendorRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

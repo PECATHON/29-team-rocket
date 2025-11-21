@@ -15,6 +15,7 @@ import ProductsManagement from './components/ProductsManagement'
 import ProtectedRoute from './components/ProtectedRoute'
 import VendorRoute from './components/VendorRoute'
 import AppLayout from './components/AppLayout'
+import Chatbot from './components/Chatbot'
 import { useAuth } from './context/AuthContext'
 import './App.css'
 
@@ -100,6 +101,7 @@ function App() {
 
   return (
     <div className="app">
+      <Chatbot />
       <Routes>
         <Route
           path="/"
